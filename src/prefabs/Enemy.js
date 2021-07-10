@@ -8,6 +8,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         //States the player can be in
         
         // add sfx here this.sfx<name> = scene.sound.add('sfx_<soundname>');
+        this.sfxEnemySE = scene.sound.add("SE_placeholder");
         // make sure the file is already loaded in menu.js
     }
     create() {
