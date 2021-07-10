@@ -4,7 +4,7 @@ class Play extends Phaser.Scene {
     }
     init() {}
     preload() {
-        this.load.image('card', './assets/temp_card.png');
+        this.load.image('card', './assets/temp_card_30.png');
     }
     create() {
         cardDeck = [];
