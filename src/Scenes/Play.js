@@ -5,13 +5,30 @@ class Play extends Phaser.Scene {
     init() {}
     preload() {
         this.load.image('card', './assets/temp_card_30.png');
+        this.load.image('ground','./assets/placeholder_ground.png');
+        this.load.image('player', './assets/noun_runningman_10.png');
+        //running person by Kathleen Black from the Noun Project
     }
     create() {
         playBGM = this.sound.add('BGMplay');
         playBGM.loop = true;
         playBGM.play();
+        this.cameras.main.setBackgroundColor('#CCC');
         //this.sound.play('BGMplay');
 
+        //creating ground
+        this.ground = this.add.group();
+        for( let i = 0; i < game.config.width; i += 20) {
+            let groundTile = this.physics.add.sprite(i, game.config.height - 20, 'ground').setOrigin(0);
+            groundTile.body.immovable = true;
+            groundTile.body.allowGravity = false;
+            this.ground.add(groundTile);
+        }
+        //creating player
+        this.player = new Player(this, game.config.width-400, game.config.height-100, 'player');
+        this.physics.add.collider(this.player, this.ground);
+
+        //creating cards and deck
         cardDeck = [];
         this.add.text(game.config.width/2, game.config.height/2, 'Final Project')
         let firstCard = this.cardCreateSingle('positive', 'move3L');
