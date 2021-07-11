@@ -7,6 +7,11 @@ class Play extends Phaser.Scene {
         this.load.image('card', './assets/temp_card_30.png');
     }
     create() {
+        //gameBGM = this.sound.add('BGMplay');
+        //gameBGM.loop = true;
+        //gameBGM.play();
+        this.sound.play('BGMplay');
+
         cardDeck = [];
         this.add.text(game.config.width/2, game.config.height/2, 'Final Project')
         let firstCard = this.cardCreateSingle('positive', 'move3L');

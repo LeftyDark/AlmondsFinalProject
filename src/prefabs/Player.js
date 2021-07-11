@@ -8,7 +8,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         //States the player can be in
         
         // add sfx here this.sfx<name> = scene.sound.add('sfx_<soundname>');
-        this.sfxPlayerSE = scene.sound.add("SE_placeholder");
+        // this.sfxappear = scene.sound.add('appear');  // optional because Player.js
         // make sure the file is already loaded in menu.js
     }
     create() {

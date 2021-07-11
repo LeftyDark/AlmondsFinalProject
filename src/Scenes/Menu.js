@@ -4,12 +4,18 @@ class Menu extends Phaser.Scene {
     }
     init() {}
     preload() {
-        this.load.audio('SE_placeholder', './assets/SoundEffects/placeholder.wav');
-        this.load.audio('BGM_placeholder', './assets/BGM/placeholder.wav');
+        this.load.audio('appear', './assets/SoundEffects/pop.wav');
+        this.load.audio('flip', './assets/SoundEffects/cardflip.wav');
+        this.load.audio('BGMplay', './assets/BGM/tanukichi_loop.wav'); // DOVA-Syndrome たぬきちの冒険
     }
-    create() {}
+    create() {
+        menuBGM = this.sound.add('BGMplay');
+        menuBGM.loop = true;
+        //menuBGM.play();
+    }
     update() {
-        this.scene.start("playScene");
+        this.sound.stopAll();
+        this.scene.start('playScene');
     }
 }
 
