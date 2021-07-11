@@ -20,4 +20,43 @@ class Card extends Phaser.Physics.Arcade.Sprite {
     }
     update() {}
     reset() {}
+
+    runSingleType (type) {
+        //The function that is use to run one single card, or one part of a combined card
+        if (type == 'move1L') {
+            //place move function here running to move 1L
+            console.log('moving 1 to the left');
+        }
+        if (type == 'move3L') {
+            //place move function here running to move 3L
+            console.log('moving 3 to the left');
+        }
+        if (type == 'move1R') {
+            //place move function here running to move 1R
+            console.log('moving 1 to the right');
+        }
+        if (type == 'move3R') {
+            //place move function here running to move 3R
+            console.log('moving 3 to the right');
+        }
+        if (type == 'jump') {
+            //place jump function here
+            console.log('jumping');
+        }
+        if (type == 'enemy') {
+            //place enemy creation function here
+            console.log('new enemy created');
+        }
+        if (type == 'attack') {
+            //place attack function here
+            console.log('attack launched');
+        }
+        if (type == 'split') {
+            //place split function here
+            console.log('cardSplit');
+        }
+    }
+    runCombinedType() {
+        for (let type of this.combinedTypeList) {this.runSingleType(type)};
+    }
 }

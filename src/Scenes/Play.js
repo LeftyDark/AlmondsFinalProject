@@ -89,5 +89,9 @@ class Play extends Phaser.Scene {
         cardDeck.push(this.newCombinedCard);
         console.log(this.newCombinedCard.charge, this.newCombinedCard.combinedTypeList);
     }
+    playCard(card) {
+        if (card.combined==false) {card.runSingleType(card.cardType)}
+        if (card.combined==true) {card.runCombinedType()}
+    }
 }
 
