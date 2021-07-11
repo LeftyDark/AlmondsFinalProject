@@ -6,13 +6,12 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this, 0);
         this.cardType = cardType;
+        this.combinedTypeList = [];
         this.charge = charge;
         this.combined = combined;
         this.running = false;
         }
-    create() {
-        cardDeck.append(this);
-    }
+    create() {}
     update() {}
     reset() {}
 }

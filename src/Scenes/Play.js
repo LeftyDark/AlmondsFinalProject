@@ -9,7 +9,9 @@ class Play extends Phaser.Scene {
     create() {
         cardDeck = [];
         this.add.text(game.config.width/2, game.config.height/2, 'Final Project')
-        this.cardCreateSingle('positive', 'move3L');
+        let firstCard = this.cardCreateSingle('positive', 'move3L');
+        let secondCard = this.cardCreateSingle('negative', 'attack');
+        let firstCombine = this.cardCombine(firstCard, secondCard);
     }
     update() {
         
@@ -46,8 +48,41 @@ class Play extends Phaser.Scene {
         //creates a card of a card type and charge that is not combined with any other cards
         let cardType = this.determineCardType(type);
         this.newCard = new Card(this, game.config.width/4, game.config.height-200, 'card', 0, cardType, charge, false);
+        this.newCard.combinedTypeList.push(this.newCard.cardType);
         cardDeck.push(this.newCard) 
-        console.log(this.newCard.cardType);
+        console.log(this.newCard.charge, this.newCard.cardType);
+        return this.newCard
+    }
+    cardCombine(card1, card2) {
+        //combines 2 cards into a card that performs all the actions of the first card, then 
+        //all the actions of the second card.
+        //The charge of the combined card is dependant on the charge of the old cards
+        if (card1.charge == card2.charge) {
+            let newCharge = card1.charge;
+        };
+        if (card1.charge == 'positive' && card2.charge == 'negative') {
+            let newCharge = 'neutral'
+        };
+        if (card1.charge == 'positive' && card2.charge == 'neutral') {
+            let newCharge = 'positive'
+        }
+        if (card1.charge == 'neutral' && card2.charge == 'positive') {
+            let newCharge = 'positive'
+        }
+        if (card1.charge == 'neutral' && card2.charge == 'negative') {
+            let newCharge = 'negative'
+        }
+        if (card1.charge == 'negative' && card2.charge == 'positive') {
+            let newCharge = 'neutral'
+        }
+        if (card1.charge == 'negative' && card2.charge == 'neutral') {
+            let newCharge = 'negative'
+        }
+        this.newCombinedCard = new Card(this, game.config.width/3, game.config.height-200, 'card', 0, card1.cardType, 'neutral', true)
+        for (let type of card1.combinedTypeList) {this.newCombinedCard.combinedTypeList.push(type)};
+        for (let type of card2.combinedTypeList) {this.newCombinedCard.combinedTypeList.push(type)};
+        cardDeck.push(this.newCombinedCard);
+        console.log(this.newCombinedCard.charge, this.newCombinedCard.combinedTypeList);
     }
 }
 
