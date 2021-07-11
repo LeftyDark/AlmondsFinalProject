@@ -10,11 +10,12 @@ class Play extends Phaser.Scene {
         //running person by Kathleen Black from the Noun Project
     }
     create() {
+        // loop BGM
         playBGM = this.sound.add('BGMplay');
         playBGM.loop = true;
         playBGM.play();
+
         this.cameras.main.setBackgroundColor('#CCC');
-        //this.sound.play('BGMplay');
 
         //creating ground
         this.ground = this.add.group();
@@ -38,9 +39,15 @@ class Play extends Phaser.Scene {
         this.playCard(firstCard);
         this.playCard(firstCombine);
         this.drawCard(cardDeck)
+
+        // Spawn Player, Enemy, and Cards
     }
     update() {
-        
+        // Player has an option to choose 2 cards to play
+        // Check is card choices are valid
+
+        // Execute all comands on card
+        // Repeat until Player reaches Goal, Falls off a cliff, or collides with an Enemy
     }
     determineCardType(type='none') {
         //When a new card is generated, decides what type of card is it.
