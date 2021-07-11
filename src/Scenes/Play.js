@@ -90,8 +90,17 @@ class Play extends Phaser.Scene {
         console.log(this.newCombinedCard.charge, this.newCombinedCard.combinedTypeList);
     }
     playCard(card) {
+        //function to run when you want to actual have the card do the actions it can do.
         if (card.combined==false) {card.runSingleType(card.cardType)}
         if (card.combined==true) {card.runCombinedType()}
+    }
+    drawCard(deck) {
+        //selects a random card out of the card deck to be drawn
+        let drawnCardNum = Math.floor(Math.random() * deck.length);
+        let drawnCard = deck[drawnCardNum]
+        deck.splice(drawnCardNum, 1);
+        console.log(random, deck[drawnCardNum]);
+        return drawnCard
     }
 }
 
