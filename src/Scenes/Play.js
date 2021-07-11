@@ -17,6 +17,10 @@ class Play extends Phaser.Scene {
         let firstCard = this.cardCreateSingle('positive', 'move3L');
         let secondCard = this.cardCreateSingle('negative', 'attack');
         let firstCombine = this.cardCombine(firstCard, secondCard);
+        console.log(firstCard.combined, firstCombine.combined);        
+        this.playCard(firstCard);
+        this.playCard(firstCombine);
+        this.drawCard(cardDeck)
     }
     update() {
         
@@ -51,7 +55,9 @@ class Play extends Phaser.Scene {
     }
     cardCreateSingle(charge, type='none') {
         //creates a card of a card type and charge that is not combined with any other cards
-        let cardType = this.determineCardType(type);
+        let cardType;
+        if (type=='none') {cardType = this.determineCardType(type);}
+        else {cardType=type}
         this.newCard = new Card(this, game.config.width/4, game.config.height-200, 'card', 0, cardType, charge, false);
         this.newCard.combinedTypeList.push(this.newCard.cardType);
         cardDeck.push(this.newCard) 
@@ -88,6 +94,7 @@ class Play extends Phaser.Scene {
         for (let type of card2.combinedTypeList) {this.newCombinedCard.combinedTypeList.push(type)};
         cardDeck.push(this.newCombinedCard);
         console.log(this.newCombinedCard.charge, this.newCombinedCard.combinedTypeList);
+        return this.newCombinedCard;
     }
     playCard(card) {
         //function to run when you want to actual have the card do the actions it can do.
@@ -98,8 +105,8 @@ class Play extends Phaser.Scene {
         //selects a random card out of the card deck to be drawn
         let drawnCardNum = Math.floor(Math.random() * deck.length);
         let drawnCard = deck[drawnCardNum]
+        console.log( deck[drawnCardNum]);
         deck.splice(drawnCardNum, 1);
-        console.log(random, deck[drawnCardNum]);
         return drawnCard
     }
 }
