@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         this.load.image('card', './assets/temp_card_30.png');
         this.load.image('ground','./assets/placeholder_ground.png');
         this.load.image('player', './assets/noun_runningman_10.png');
+        this.load.image('platform', './assets/placeholder_platform.png');
         //running person by Kathleen Black from the Noun Project
     }
     create() {
@@ -25,6 +26,9 @@ class Play extends Phaser.Scene {
             groundTile.body.allowGravity = false;
             this.ground.add(groundTile);
         }
+        //creating a platform with no bottom collision
+        this.platform = this.physics.add.sprite(game.config.width-512, game.config.height-300, 'platform').setOrigin(0);
+        this.platform.body.checkCollision.down = false;
         //creating player
         this.player = new Player(this, game.config.width-400, game.config.height-100, 'player');
         this.physics.add.collider(this.player, this.ground);
