@@ -11,11 +11,6 @@ class Play extends Phaser.Scene {
         //running person by Kathleen Black from the Noun Project
     }
     create() {
-        // loop BGM
-        playBGM = this.sound.add('BGMplay');
-        playBGM.loop = true;
-        playBGM.play();
-
         this.cameras.main.setBackgroundColor('#CCC');
 
         //creating ground
