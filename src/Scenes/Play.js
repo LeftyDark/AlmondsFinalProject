@@ -31,9 +31,9 @@ class Play extends Phaser.Scene {
         // this.platform.body.checkCollision.down = false;
 
         //creating player
-        this.player = new Player(this, game.config.width-400, game.config.height-100, 'player');
-        this.physics.add.collider(this.player, this.ground);
-        this.physics.add.collider(this.player, this.platform);
+        player = new Player(this, game.config.width-400, game.config.height-100, 'player');
+        this.physics.add.collider(player, this.ground);
+        this.physics.add.collider(player, this.platform);
 
 
         //creating cards and deck
@@ -76,15 +76,23 @@ class Play extends Phaser.Scene {
         // Repeat until Player reaches Goal, Falls off a cliff, or collides with an Enemy
         if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
             this.sound.play('appear');
-            this.player.jump();
+            player.jump();
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             this.sound.play('appear');
+<<<<<<< HEAD
             this.player.right();
         }
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.sound.play('appear');
             this.player.left();
+=======
+            player.rightOne();
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+            this.sound.play('appear');
+            player.leftOne();
+>>>>>>> 513273b328fef764472ea2ad69e5c540d2185eca
         }
     }
 
@@ -123,6 +131,7 @@ class Play extends Phaser.Scene {
         else {cardType=type}
         let newCard;
         newCard = new Card(this, x, y, 'card', 0, cardType, charge, false).setInteractive();
+        newCard.body.allowGravity = false;
         let self = this;
         newCard.on('pointerdown', function (pointer) {
             selectedCounter +=1;
@@ -162,6 +171,7 @@ class Play extends Phaser.Scene {
         }
         let newCombinedCard;
         newCombinedCard = new Card(this, x,y, 'card', 0, card1.cardType, newCharge, true).setInteractive();
+        newCombinedCard.body.allowGravity = false;
         newCombinedCard.on('pointerdown', function (pointer) {
             selectedCounter +=1;
             selectedCardList.push(newCombinedCard);
