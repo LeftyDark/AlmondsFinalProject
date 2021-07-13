@@ -80,19 +80,11 @@ class Play extends Phaser.Scene {
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             this.sound.play('appear');
-<<<<<<< HEAD
-            this.player.right();
+            player.right();
         }
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.sound.play('appear');
-            this.player.left();
-=======
-            player.rightOne();
-        }
-        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-            this.sound.play('appear');
-            player.leftOne();
->>>>>>> 513273b328fef764472ea2ad69e5c540d2185eca
+            player.left();
         }
     }
 
