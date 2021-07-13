@@ -32,18 +32,32 @@ class Play extends Phaser.Scene {
 
         //creating cards and deck
         cardDeck = [];
+        selectedCardList = [];
+        selectedCounter = 0;
         this.add.text(game.config.width/2, game.config.height/2, 'Final Project')
-        let firstCard = this.cardCreateSingle('positive', 'move3L', game.config.width/4, game.config.height-200);
-        let secondCard = this.cardCreateSingle('negative', 'attack', game.config.width/2, game.config.height-200);
-        let firstCombine = this.cardCombine(firstCard, secondCard);
-        console.log(firstCard.combined, firstCombine.combined);
-        this.playCard(firstCard);
-        this.playCard(firstCombine);
-        this.drawCard(cardDeck)
+        let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-200);
+        let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-200);
+        //let firstCombine = this.cardCombine(firstCard, secondCard);
+        //this.playCard(firstCard);
+        //this.playCard(firstCombine);
+        //this.drawCard(cardDeck)
+        
+        
 
         // Spawn Player, Enemy, and Cards
     }
     update() {
+        if (selectedCounter == 2) {
+        //Once 2 cards have been selected, runs then combines those two cards
+            selectedCounter = 0;
+            console.log(selectedCardList);
+            if (selectedCardList[0].combined == false) {selectedCardList[0].runSingleType(selectedCardList[0].cardType)}
+            else {selectedCardList[0].runCombinedType();}
+            if (selectedCardList[1].combined == false) {selectedCardList[0].runSingleType(selectedCardList[1].cardType)}
+            else {selectedCardList[1].runCombinedType();}
+            this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-200); //Need to update this to only combine cards if they should actually combine
+            selectedCardList.splice(0, 2);
+        }
         // Player has an option to choose 2 cards to play
         // Check is card choices are valid
 
@@ -81,20 +95,22 @@ class Play extends Phaser.Scene {
     cardCreateSingle(charge, type='none', x, y) {
         //creates a card of a card type and charge that is not combined with any other cards
         let cardType;
-        if (type=='none') {cardType = this.determineCardType(type);}
+        if (type=='none') {cardType = this.determineCardType();}
         else {cardType=type}
-        this.newCard = new Card(this, x, y, 'card', 0, cardType, charge, false).setInteractive();
-        this.newCard.on('pointerdown', function (pointer) {
-            this.selected = true;
+        let newCard;
+        newCard = new Card(this, x, y, 'card', 0, cardType, charge, false).setInteractive();
+        let self = this;
+        newCard.on('pointerdown', function (pointer) {
             selectedCounter +=1;
-            console.log('woah you tapped')
+            selectedCardList.push(newCard);
+            console.log('card selected');
         });        
-        this.newCard.combinedTypeList.push(this.newCard.cardType);
-        cardDeck.push(this.newCard) 
-        console.log(this.newCard.charge, this.newCard.cardType);
-        return this.newCard
+        newCard.combinedTypeList.push(newCard.cardType);
+        cardDeck.push(newCard) 
+        console.log(newCard.charge, newCard.cardType);
+        return newCard
     }
-    cardCombine(card1, card2) {
+    cardCombine(card1, card2, x, y) {
         //combines 2 cards into a card that performs all the actions of the first card, then 
         //all the actions of the second card.
         //The charge of the combined card is dependant on the charge of the old cards
@@ -120,17 +136,18 @@ class Play extends Phaser.Scene {
         if (card1.charge == 'negative' && card2.charge == 'neutral') {
             newCharge = 'negative'
         }
-        this.newCombinedCard = new Card(this, game.config.width*0.8, game.config.height-200, 'card', 0, card1.cardType, newCharge, true).setInteractive();
-        this.newCombinedCard.on('pointerdown', function (pointer) {
-            this.selected = true;
+        let newCombinedCard;
+        newCombinedCard = new Card(this, x,y, 'card', 0, card1.cardType, newCharge, true).setInteractive();
+        newCombinedCard.on('pointerdown', function (pointer) {
             selectedCounter +=1;
-            console.log('woah you tapped')
+            selectedCardList.push(newCombinedCard);
+            console.log('card selected')
         });        
-        for (let type of card1.combinedTypeList) {this.newCombinedCard.combinedTypeList.push(type)};
-        for (let type of card2.combinedTypeList) {this.newCombinedCard.combinedTypeList.push(type)};
-        cardDeck.push(this.newCombinedCard);
-        console.log(this.newCombinedCard.charge, this.newCombinedCard.combinedTypeList);
-        return this.newCombinedCard;
+        for (let type of card1.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
+        for (let type of card2.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
+        cardDeck.push(newCombinedCard);
+        console.log(newCombinedCard.charge, newCombinedCard.combinedTypeList);
+        return newCombinedCard;
     }
     playCard(card) {
         //function to run when you want to actual have the card do the actions it can do.
