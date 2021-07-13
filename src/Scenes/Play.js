@@ -25,11 +25,9 @@ class Play extends Phaser.Scene {
         //creating a platform with no bottom collision
         this.platform = this.add.group();
         let plat = this.physics.add.sprite(game.config.width-512, game.config.height-300, 'platform').setOrigin(0);
-        
         plat.body.immovable = true;
         plat.body.allowGravity = false;
         this.platform.add(plat);
-
         // this.platform.body.checkCollision.down = false;
 
         //creating player
@@ -42,7 +40,7 @@ class Play extends Phaser.Scene {
         cardDeck = [];
         selectedCardList = [];
         selectedCounter = 0;
-        this.add.text(game.config.width/2, game.config.height/2, 'Final Project')
+        this.add.text(game.config.width/2, game.config.height/2, 'Final Project');
         let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-200);
         let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-200);
         //let firstCombine = this.cardCombine(firstCard, secondCard);
@@ -82,11 +80,11 @@ class Play extends Phaser.Scene {
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             this.sound.play('appear');
-            this.player.rightOne();
+            this.player.right();
         }
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.sound.play('appear');
-            this.player.leftOne();
+            this.player.left();
         }
     }
 
