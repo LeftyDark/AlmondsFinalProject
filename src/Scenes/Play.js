@@ -21,11 +21,16 @@ class Play extends Phaser.Scene {
             groundTile.body.allowGravity = false;
             this.ground.add(groundTile);
         }
+
         //creating a platform with no bottom collision
-        this.platform = this.physics.add.sprite(game.config.width-512, game.config.height-300, 'platform').setOrigin(0);
-        this.platform.body.checkCollision.down = false;
-        this.platform.body.immovable = true;
-        this.platform.allowGravity = false;
+        this.platform = this.add.group();
+        let plat = this.physics.add.sprite(game.config.width-512, game.config.height-300, 'platform').setOrigin(0);
+        
+        plat.body.immovable = true;
+        plat.body.allowGravity = false;
+        this.platform.add(plat);
+
+        // this.platform.body.checkCollision.down = false;
 
         //creating player
         this.player = new Player(this, game.config.width-400, game.config.height-100, 'player');
