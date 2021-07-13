@@ -40,6 +40,8 @@ class Play extends Phaser.Scene {
         this.drawCard(cardDeck)
 
         // Spawn Player, Enemy, and Cards
+
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
     update() {
         // Player has an option to choose 2 cards to play
@@ -48,6 +50,7 @@ class Play extends Phaser.Scene {
         // Execute all comands on card
         // Repeat until Player reaches Goal, Falls off a cliff, or collides with an Enemy
     }
+
     determineCardType(type='none') {
         //When a new card is generated, decides what type of card is it.
         //A type can also be inputted initially to create a card of a specific type
