@@ -22,3 +22,4 @@ let borderPadding = borderUISize/3;
 //initialize variable for Deck array
 let cardDeck;
 let menuBGM, playBGM;
+let selectedCounter;

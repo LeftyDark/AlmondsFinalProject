@@ -10,6 +10,7 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         this.charge = charge;
         this.combined = combined;
         this.running = false;
+        this.selected = false;
 
         // load sfx here
         this.sfxFlip = scene.sound.add('flip');
