@@ -21,7 +21,12 @@ let borderPadding = borderUISize/3;
 
 // initialize variable for Deck array
 let cardDeck;
+<<<<<<< HEAD
 // intialize Music variable
 let playBGM;
 // initialize key values
 let keySPACE;
+=======
+let playBGM;
+let selectedCounter;
+>>>>>>> c5bb5d4d0cf083a06324c860dbd1a75c4e52397a

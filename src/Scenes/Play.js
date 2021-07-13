@@ -24,17 +24,19 @@ class Play extends Phaser.Scene {
         //creating a platform with no bottom collision
         this.platform = this.physics.add.sprite(game.config.width-512, game.config.height-300, 'platform').setOrigin(0);
         this.platform.body.checkCollision.down = false;
+        this.platform.body.immovable = true;
         //creating player
         this.player = new Player(this, game.config.width-400, game.config.height-100, 'player');
         this.physics.add.collider(this.player, this.ground);
+        this.physics.add.collider(this.player, this.platform);
 
         //creating cards and deck
         cardDeck = [];
         this.add.text(game.config.width/2, game.config.height/2, 'Final Project')
-        let firstCard = this.cardCreateSingle('positive', 'move3L');
-        let secondCard = this.cardCreateSingle('negative', 'attack');
+        let firstCard = this.cardCreateSingle('positive', 'move3L', game.config.width/4, game.config.height-200);
+        let secondCard = this.cardCreateSingle('negative', 'attack', game.config.width/2, game.config.height-200);
         let firstCombine = this.cardCombine(firstCard, secondCard);
-        console.log(firstCard.combined, firstCombine.combined);        
+        console.log(firstCard.combined, firstCombine.combined);
         this.playCard(firstCard);
         this.playCard(firstCombine);
         this.drawCard(cardDeck)
@@ -79,12 +81,17 @@ class Play extends Phaser.Scene {
             return 'split'
         }
     }
-    cardCreateSingle(charge, type='none') {
+    cardCreateSingle(charge, type='none', x, y) {
         //creates a card of a card type and charge that is not combined with any other cards
         let cardType;
         if (type=='none') {cardType = this.determineCardType(type);}
         else {cardType=type}
-        this.newCard = new Card(this, game.config.width/4, game.config.height-200, 'card', 0, cardType, charge, false);
+        this.newCard = new Card(this, x, y, 'card', 0, cardType, charge, false).setInteractive();
+        this.newCard.on('pointerdown', function (pointer) {
+            this.selected = true;
+            selectedCounter +=1;
+            console.log('woah you tapped')
+        });        
         this.newCard.combinedTypeList.push(this.newCard.cardType);
         cardDeck.push(this.newCard) 
         console.log(this.newCard.charge, this.newCard.cardType);
@@ -94,28 +101,34 @@ class Play extends Phaser.Scene {
         //combines 2 cards into a card that performs all the actions of the first card, then 
         //all the actions of the second card.
         //The charge of the combined card is dependant on the charge of the old cards
+        let newCharge;
         if (card1.charge == card2.charge) {
-            let newCharge = card1.charge;
+            newCharge = card1.charge;
         };
         if (card1.charge == 'positive' && card2.charge == 'negative') {
-            let newCharge = 'neutral'
+            newCharge = 'neutral'
         };
         if (card1.charge == 'positive' && card2.charge == 'neutral') {
-            let newCharge = 'positive'
+            newCharge = 'positive'
         }
         if (card1.charge == 'neutral' && card2.charge == 'positive') {
-            let newCharge = 'positive'
+            newCharge = 'positive'
         }
         if (card1.charge == 'neutral' && card2.charge == 'negative') {
-            let newCharge = 'negative'
+            newCharge = 'negative'
         }
         if (card1.charge == 'negative' && card2.charge == 'positive') {
-            let newCharge = 'neutral'
+            newCharge = 'neutral'
         }
         if (card1.charge == 'negative' && card2.charge == 'neutral') {
-            let newCharge = 'negative'
+            newCharge = 'negative'
         }
-        this.newCombinedCard = new Card(this, game.config.width/3, game.config.height-200, 'card', 0, card1.cardType, 'neutral', true)
+        this.newCombinedCard = new Card(this, game.config.width*0.8, game.config.height-200, 'card', 0, card1.cardType, newCharge, true).setInteractive();
+        this.newCombinedCard.on('pointerdown', function (pointer) {
+            this.selected = true;
+            selectedCounter +=1;
+            console.log('woah you tapped')
+        });        
         for (let type of card1.combinedTypeList) {this.newCombinedCard.combinedTypeList.push(type)};
         for (let type of card2.combinedTypeList) {this.newCombinedCard.combinedTypeList.push(type)};
         cardDeck.push(this.newCombinedCard);
