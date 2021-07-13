@@ -27,6 +27,4 @@ let playBGM;
 // initialize key values
 let keySPACE;
 
-let playBGM;
-
 let selectedCounter, selectedCardList;
