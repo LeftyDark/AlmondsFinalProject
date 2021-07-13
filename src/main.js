@@ -7,7 +7,7 @@ let config = {
         arcade: {
             gravity: {
                 x: 0,
-                y: 0
+                y: 5000
             }
         }
     },
@@ -25,6 +25,6 @@ let cardDeck;
 // intialize Music variable
 let playBGM;
 // initialize key values
-let keySPACE;
+let keySPACE, keyRIGHT, keyLEFT;
 
 let selectedCounter, selectedCardList;

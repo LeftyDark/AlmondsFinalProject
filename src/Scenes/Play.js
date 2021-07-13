@@ -25,10 +25,13 @@ class Play extends Phaser.Scene {
         this.platform = this.physics.add.sprite(game.config.width-512, game.config.height-300, 'platform').setOrigin(0);
         this.platform.body.checkCollision.down = false;
         this.platform.body.immovable = true;
+        this.platform.allowGravity = false;
+
         //creating player
         this.player = new Player(this, game.config.width-400, game.config.height-100, 'player');
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.player, this.platform);
+
 
         //creating cards and deck
         cardDeck = [];
@@ -46,7 +49,10 @@ class Play extends Phaser.Scene {
 
         // Spawn Player, Enemy, and Cards
 
+        // Assign key values here
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     }
     update() {
         if (selectedCounter == 2) {
@@ -65,6 +71,18 @@ class Play extends Phaser.Scene {
 
         // Execute all comands on card
         // Repeat until Player reaches Goal, Falls off a cliff, or collides with an Enemy
+        if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
+            this.sound.play('appear');
+            this.player.jump();
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+            this.sound.play('appear');
+            this.player.rightOne();
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+            this.sound.play('appear');
+            this.player.leftOne();
+        }
     }
 
     determineCardType(type='none') {
