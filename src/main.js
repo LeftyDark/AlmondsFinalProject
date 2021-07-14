@@ -1,7 +1,7 @@
 let config = {
     type: Phaser.CANVAS,
     width: 1024,
-    height: 768,
+    height: 700,
     physics: {
         default: 'arcade',
         arcade: {

@@ -72,8 +72,8 @@ class Play extends Phaser.Scene {
         selectedCardList = [];
         selectedCounter = 0;
         this.add.text(game.config.width/4, game.config.height/2, 'Click on cards to combine them and use their actions! \n Or move left and right with the arrow keys, and jump with SPACEBAR!');
-        let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-600);
-        let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-600);
+        let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-550);
+        let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-550);
         //let firstCombine = this.cardCombine(firstCard, secondCard);
         //this.playCard(firstCard);
         //this.playCard(firstCombine);
@@ -97,7 +97,7 @@ class Play extends Phaser.Scene {
             else {selectedCardList[0].runCombinedType();}
             if (selectedCardList[1].combined == false) {selectedCardList[0].runSingleType(selectedCardList[1].cardType)}
             else {selectedCardList[1].runCombinedType();}
-            this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-600); //Need to update this to only combine cards if they should actually combine
+            this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-550); //Need to update this to only combine cards if they should actually combine
             selectedCardList.splice(0, 2);
         }
         // Player has an option to choose 2 cards to play
