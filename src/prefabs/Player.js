@@ -22,12 +22,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     reset() {}
 
     jump() {
-        this.y -= 300;
+        this.body.velocity.y -= 2000;
     }
     left() {
-        this.x -= 100;
+        this.body.velocity.x -= 100;
+        setTimeout(() => {  player.body.velocity.x = 0 }, 1000);
     }
     right() {
-        this.x += 100;
+        this.body.velocity.x += 100;
+        setTimeout(() => {  player.body.velocity.x = 0 }, 1000);
     }
 }
