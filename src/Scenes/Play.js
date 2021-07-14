@@ -34,6 +34,7 @@ class Play extends Phaser.Scene {
 
         //creating player
         player = new Player(this, game.config.width-400, game.config.height-100, 'player');
+        player.setCollideWorldBounds(true);
         this.physics.add.collider(player, this.ground);
         this.physics.add.collider(player, this.platform);
 
@@ -43,8 +44,8 @@ class Play extends Phaser.Scene {
         selectedCardList = [];
         selectedCounter = 0;
         this.add.text(game.config.width/2, game.config.height/2, 'Final Project')
-        let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-200);
-        let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-200);
+        let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-600);
+        let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-600);
         //let firstCombine = this.cardCombine(firstCard, secondCard);
         //this.playCard(firstCard);
         //this.playCard(firstCombine);
@@ -68,7 +69,7 @@ class Play extends Phaser.Scene {
             else {selectedCardList[0].runCombinedType();}
             if (selectedCardList[1].combined == false) {selectedCardList[0].runSingleType(selectedCardList[1].cardType)}
             else {selectedCardList[1].runCombinedType();}
-            this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-200); //Need to update this to only combine cards if they should actually combine
+            this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-600); //Need to update this to only combine cards if they should actually combine
             selectedCardList.splice(0, 2);
         }
         // Player has an option to choose 2 cards to play
@@ -125,6 +126,8 @@ class Play extends Phaser.Scene {
         else {cardType=type}
         let newCard;
         newCard = new Card(this, x, y, 'card', 0, cardType, charge, false).setInteractive();
+        this.cardText = this.add.text(0,0, `charge is ${newCard.charge} \n type is ${newCard.cardType}`);
+        this.cardText.setPosition(newCard.x-80, newCard.y);
         newCard.body.allowGravity = false;
         let self = this;
         newCard.on('pointerdown', function (pointer) {
@@ -175,6 +178,8 @@ class Play extends Phaser.Scene {
         for (let type of card2.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
         cardDeck.push(newCombinedCard);
         console.log(newCombinedCard.charge, newCombinedCard.combinedTypeList);
+        this.cardText = this.add.text(0,0, `charge is ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
+        this.cardText.setPosition(newCombinedCard.x-80, newCombinedCard.y);
         return newCombinedCard;
     }
     playCard(card) {
