@@ -19,7 +19,7 @@ let game = new Phaser.Game(config);
 let borderUISize = game.config.height/15;
 let borderPadding = borderUISize/3;
 
-//initialize variable for player 
+//initialize variable for player
 let player;
 // initialize variable for Deck array
 let cardDeck;

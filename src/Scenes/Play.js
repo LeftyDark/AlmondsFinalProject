@@ -8,6 +8,10 @@ class Play extends Phaser.Scene {
         this.load.image('ground','./assets/placeholder_ground.png');
         this.load.image('player', './assets/noun_runningman_10.png');
         this.load.image('platform', './assets/placeholder_platform.png');
+        this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 7});
+        this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 7});
+        this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 14});
+        this.load.spritesheet('jumpLsprite', './assets/jumpL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 14});
         //running person by Kathleen Black from the Noun Project
     }
     create() {
@@ -31,19 +35,45 @@ class Play extends Phaser.Scene {
         // this.platform.body.checkCollision.down = false;
 
         //creating player
-        player = new Player(this, game.config.width-400, game.config.height-100, 'player');
+        player = new Player(this, game.config.width-400, game.config.height-100, 'dashRsprite');
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, this.ground);
         this.physics.add.collider(player, this.platform);
 
+        //creating animations
+        this.dashRAni = this.anims.create({
+            key: 'playerDashR',
+            frames: this.anims.generateFrameNumbers('dashRsprite', { start: 0, end: 7, first: 0}),
+            frameRate: 8,
+            repeat: 0
+        });
+        this.dashLAni = this.anims.create({
+            key: 'playerDashL',
+            frames: this.anims.generateFrameNumbers('dashLsprite', { start: 0, end: 7, first: 0}),
+            frameRate: 8,
+            repeat: 0
+        });
+        this.jumpLAni = this.anims.create({
+            key: 'playerJumpL',
+            frames: this.anims.generateFrameNumbers('jumpLsprite', { start: 0, end: 14, first: 0}),
+            frameRate: 8,
+            repeat: 0
+        });
+        this.jumpRAni = this.anims.create({
+            key: 'playerJumpR',
+            frames: this.anims.generateFrameNumbers('jumpRsprite', { start: 0, end: 14, first: 0}),
+            frameRate: 8,
+            repeat: 0
+        });
+        
 
         //creating cards and deck
         cardDeck = [];
         selectedCardList = [];
         selectedCounter = 0;
-        this.add.text(game.config.width/2, game.config.height/2, 'Final Project');
-        let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-200);
-        let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-200);
+        this.add.text(game.config.width/4, game.config.height/2, 'Click on cards to combine them and use their actions! \n Or move left and right with the arrow keys, and jump with SPACEBAR!');
+        let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-600);
+        let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-600);
         //let firstCombine = this.cardCombine(firstCard, secondCard);
         //this.playCard(firstCard);
         //this.playCard(firstCombine);
