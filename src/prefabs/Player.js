@@ -22,18 +22,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     reset() {}
 
     jump() {
-        this.y -= 100;
+        this.y -= 300;
     }
-    leftOne() {
+    left() {
         this.x -= 100;
     }
-    leftThree() {
-        this.x -= 300;
-    }
-    rightOne() {
+    right() {
         this.x += 100;
-    }
-    rightThree() {
-        this.x += 300;
     }
 }

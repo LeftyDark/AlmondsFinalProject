@@ -27,22 +27,26 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         if (type == 'move1L') {
             //place move function here running to move 1L
             console.log('moving 1 to the left');
-            player.leftOne();
+            player.left();
         }
         if (type == 'move3L') {
             //place move function here running to move 3L
             console.log('moving 3 to the left');
-            player.leftThree();
+            player.left();
+            player.left();
+            player.left();
         }
         if (type == 'move1R') {
             //place move function here running to move 1R
             console.log('moving 1 to the right');
-            player.rightOne();
+            player.right();
         }
         if (type == 'move3R') {
             //place move function here running to move 3R
             console.log('moving 3 to the right');
-            player.rightThree();
+            player.right();
+            player.right();
+            player.right();
         }
         if (type == 'jump') {
             //place jump function here
