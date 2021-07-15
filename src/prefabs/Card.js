@@ -11,6 +11,11 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         this.combined = combined;
         this.running = false;
         this.selected = false;
+        this.move = 0;
+        this.jump = 0;
+        this.enemy = 0;
+        this.attack = 0;
+        this.split = 0;
 
         // load sfx here
         this.sfxFlip = scene.sound.add('flip');
@@ -67,6 +72,27 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         }
     }
     runCombinedType() {
-        for (let type of this.combinedTypeList) {this.runSingleType(type)};
+        if (this.move < 0) {
+            let runLeft = Math.abs(this.move)
+            for (let i = 0; i < runLeft; i++) {player.left();}
+        }
+        if (this.move > 0) {
+            for (let i = 0; i < this.move; i++) {player.right();}
+        }
+        if (this.jump > 0) {
+            for (let i = 0; i < this.jump; i++) {player.jump();}
+        }
+        if (this.enemy > 0) {
+            for (let i = 0; i < this.enemy; i++) {//put enemy function here
+            }
+        }
+        if (this.attack > 0) {
+            for (let i = 0; i < this.attack; i++) {//put attack function here
+            }
+        }
+        if (this.split > 0) {
+            for (let i = 0; i < this.split; i++) {//put split function here
+            }
+        }
     }
 }

@@ -100,8 +100,13 @@ class Play extends Phaser.Scene {
             else {selectedCardList[0].runCombinedType();}
             if (selectedCardList[1].combined == false) {selectedCardList[0].runSingleType(selectedCardList[1].cardType)}
             else {selectedCardList[1].runCombinedType();}
-            this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-550); //Need to update this to only combine cards if they should actually combine
+            if ((selectedCardList[0].charge == 'positive' && selectedCardList[1].charge == 'positive') || (selectedCardList[0].charge == 'negative' && selectedCardList[1].charge == 'negative')) {
+                console.log('same charges do not combine');
+            }
+            else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-550);}
             selectedCardList.splice(0, 2);
+            let firstCard = this.cardCreateSingle('positive', 'none', game.config.width/4, game.config.height-550);
+        let secondCard = this.cardCreateSingle('negative', 'none', game.config.width/2, game.config.height-550);
         }
         // Player has an option to choose 2 cards to play
         // Check is card choices are valid
@@ -125,7 +130,8 @@ class Play extends Phaser.Scene {
     determineCardType(type='none') {
         //When a new card is generated, decides what type of card is it.
         //A type can also be inputted initially to create a card of a specific type
-        let typeNum = Phaser.Math.Between(1,8);
+        //let typeNum = Phaser.Math.Between(1,8);
+        let typeNum = Phaser.Math.Between(1,5); //smaller amount for just working cards
         if (type == 'move1L' || typeNum == 1) {
             return 'move1L'}
         if (type == 'move3L' || typeNum == 2) {
@@ -207,8 +213,18 @@ class Play extends Phaser.Scene {
         });        
         for (let type of card1.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
         for (let type of card2.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
+        for (let type of newCombinedCard.combinedTypeList) {
+            if (type == 'move1L') {newCombinedCard.move -=1}
+            if (type == 'move3L') {newCombinedCard.move -=3}
+            if (type == 'move1R') {newCombinedCard.move +=1}
+            if (type == 'move3R') {newCombinedCard.move +=3}
+            if (type == 'jump') {newCombinedCard.jump +=1}
+            if (type == 'enemy') {newCombinedCard.enemy +=1}
+            if (type == 'attack') {newCombinedCard.attack +=1}
+            if (type == 'split') {newCombinedCard.split +=1}
+        }
         cardDeck.push(newCombinedCard);
-        console.log(newCombinedCard.charge, newCombinedCard.combinedTypeList);
+        console.log(newCombinedCard.combinedTypeList, newCombinedCard.move, newCombinedCard.jump, newCombinedCard.enemy, newCombinedCard.attack, newCombinedCard.split);
         this.cardText = this.add.text(0,0, `charge is ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
         this.cardText.setPosition(newCombinedCard.x-80, newCombinedCard.y);
         return newCombinedCard;
