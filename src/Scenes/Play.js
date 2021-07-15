@@ -12,6 +12,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 7});
         this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 14});
         this.load.spritesheet('jumpLsprite', './assets/jumpL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 14});
+        this.load.image('goal', './assets/Sprites/Star.png');
         //running person by Kathleen Black from the Noun Project
     }
     create() {
@@ -39,6 +40,8 @@ class Play extends Phaser.Scene {
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, this.ground);
         this.physics.add.collider(player, this.platform);
+
+        // create Goal
 
         //creating animations
         this.dashRAni = this.anims.create({
