@@ -78,15 +78,13 @@ class Play extends Phaser.Scene {
         selectedCounter = 0;
         this.add.text(game.config.width/4, game.config.height/2, 'Click on cards to combine them and use their actions! \n Or move left and right with the arrow keys, and jump with SPACEBAR!');
         this.createDeck();
-        this.createHand();
+        this.updateHand();
         let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-550);
         let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-550);
         //let firstCombine = this.cardCombine(firstCard, secondCard);
         //this.playCard(firstCard);
         //this.playCard(firstCombine);
         //this.drawCard(cardDeck)
-        
-        
 
         // Spawn Player, Enemy, and Cards
 
@@ -109,8 +107,10 @@ class Play extends Phaser.Scene {
             }
             else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-550);}
             selectedCardList.splice(0, 2);
-            let firstCard = this.cardCreateSingle('positive', 'none', game.config.width/4, game.config.height-550);
-        let secondCard = this.cardCreateSingle('negative', 'none', game.config.width/2, game.config.height-550);
+            let firstCard = this.cardCreateSingle('none', 'none', game.config.width/4, game.config.height-550);
+            let secondCard = this.cardCreateSingle('none', 'none', game.config.width/2, game.config.height-550);
+            handSize -=2;
+            this.updateHand();
         }
         // Player has an option to choose 2 cards to play
         // Check is card choices are valid
@@ -160,13 +160,18 @@ class Play extends Phaser.Scene {
             return 'split'
         }
     }
-    cardCreateSingle(charge, type='none', x, y) {
+    cardCreateSingle(charge='none', type='none', x, y) {
         //creates a card of a card type and charge that is not combined with any other cards
-        let cardType;
+        let cardType, cardCharge;
+        if (charge=='none') {let chargeNum = Math.floor(Math.random()*2)
+            if (chargeNum == 1) {cardCharge = 'negative'}
+            else {cardCharge = 'positive'}
+        }
+        else {cardCharge = charge}
         if (type=='none') {cardType = this.determineCardType();}
         else {cardType=type}
         let newCard;
-        newCard = new Card(this, x, y, 'card', 0, cardType, charge, false).setInteractive();
+        newCard = new Card(this, x, y, 'card', 0, cardType, cardCharge, false).setInteractive();
         this.cardText = this.add.text(0,0, `charge is ${newCard.charge} \n type is ${newCard.cardType}`);
         this.cardText.setPosition(newCard.x-80, newCard.y);
         newCard.body.allowGravity = false;
@@ -238,12 +243,14 @@ class Play extends Phaser.Scene {
         if (card.combined==true) {card.runCombinedType()}
     }
     drawCard(deck) {
-        //selects a random card out of the card deck to be drawn
+        //selects a random card out of the card deck to be drawn. If no card can be drawn, causes a game over (at this moment, just in the console).
+        if (cardDeck.length == 0) {console.log('game over')}
+        else {
         let drawnCardNum = Math.floor(Math.random() * deck.length);
         let drawnCard = deck[drawnCardNum]
         console.log( deck[drawnCardNum]);
         deck.splice(drawnCardNum, 1);
-        return drawnCard
+        return drawnCard}
     }
     createDeck() {
         //This functions creates the default deck of cards for the start of the game.
@@ -265,9 +272,8 @@ class Play extends Phaser.Scene {
         this.cardCreateSingle('negative', 'split', game.config.width-5000, game.config.height-550);
         console.log(cardDeck.length);
     }
-    createHand() {
-        //This functions creates the player's hand to make sure it always has five cards. If there is no card left in the deck, it makes
-        //the player lose the game instead.
+    updateHand() {
+        //This functions updates the player's hand to make sure it always has five cards. 
         while (handSize < 5) {
             this.drawCard(cardDeck);
             handSize +=1;
