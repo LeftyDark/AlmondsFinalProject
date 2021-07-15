@@ -21,8 +21,8 @@ let borderPadding = borderUISize/3;
 
 //initialize variable for player
 let player;
-// initialize variable for Deck array
-let cardDeck;
+// initialize variable for Deck array and hand stuff
+let cardDeck, handSize, handList;
 
 // intialize Music variable
 let playBGM;
