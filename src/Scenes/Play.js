@@ -69,9 +69,13 @@ class Play extends Phaser.Scene {
 
         //creating cards and deck
         cardDeck = [];
+        handList = [];
+        handSize = 0;
         selectedCardList = [];
         selectedCounter = 0;
         this.add.text(game.config.width/4, game.config.height/2, 'Click on cards to combine them and use their actions! \n Or move left and right with the arrow keys, and jump with SPACEBAR!');
+        this.createDeck();
+        this.createHand();
         let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-550);
         let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-550);
         //let firstCombine = this.cardCombine(firstCard, secondCard);
@@ -163,7 +167,6 @@ class Play extends Phaser.Scene {
         this.cardText = this.add.text(0,0, `charge is ${newCard.charge} \n type is ${newCard.cardType}`);
         this.cardText.setPosition(newCard.x-80, newCard.y);
         newCard.body.allowGravity = false;
-        let self = this;
         newCard.on('pointerdown', function (pointer) {
             selectedCounter +=1;
             selectedCardList.push(newCard);
@@ -238,6 +241,34 @@ class Play extends Phaser.Scene {
         console.log( deck[drawnCardNum]);
         deck.splice(drawnCardNum, 1);
         return drawnCard
+    }
+    createDeck() {
+        //This functions creates the default deck of cards for the start of the game.
+        this.cardCreateSingle('positive', 'move1L', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('positive', 'move3L', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('positive', 'move1R', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('positive', 'move3R', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('positive', 'jump', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('positive', 'enemy', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('positive', 'attack', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('positive', 'split', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('negative', 'move1L', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('negative', 'move3L', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('negative', 'move1R', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('negative', 'move3R', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('negative', 'jump', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('negative', 'enemy', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('negative', 'attack', game.config.width-5000, game.config.height-550);
+        this.cardCreateSingle('negative', 'split', game.config.width-5000, game.config.height-550);
+        console.log(cardDeck.length);
+    }
+    createHand() {
+        //This functions creates the player's hand to make sure it always has five cards. If there is no card left in the deck, it makes
+        //the player lose the game instead.
+        while (handSize < 5) {
+            this.drawCard(cardDeck);
+            handSize +=1;
+        }
     }
 }
 
