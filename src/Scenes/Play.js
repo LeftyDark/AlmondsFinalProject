@@ -204,8 +204,18 @@ class Play extends Phaser.Scene {
         });        
         for (let type of card1.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
         for (let type of card2.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
+        for (let type of newCombinedCard.combinedTypeList) {
+            if (type == 'move1L') {newCombinedCard.move -=1}
+            if (type == 'move3L') {newCombinedCard.move -=3}
+            if (type == 'move1R') {newCombinedCard.move +=1}
+            if (type == 'move3R') {newCombinedCard.move +=3}
+            if (type == 'jump') {newCombinedCard.jump +=1}
+            if (type == 'enemy') {newCombinedCard.enemy +=1}
+            if (type == 'attack') {newCombinedCard.attack +=1}
+            if (type == 'split') {newCombinedCard.split +=1}
+        }
         cardDeck.push(newCombinedCard);
-        console.log(newCombinedCard.charge, newCombinedCard.combinedTypeList);
+        console.log(newCombinedCard.combinedTypeList, newCombinedCard.move, newCombinedCard.jump, newCombinedCard.enemy, newCombinedCard.attack, newCombinedCard.split);
         this.cardText = this.add.text(0,0, `charge is ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
         this.cardText.setPosition(newCombinedCard.x-80, newCombinedCard.y);
         return newCombinedCard;
