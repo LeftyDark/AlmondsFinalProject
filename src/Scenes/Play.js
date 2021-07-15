@@ -97,7 +97,10 @@ class Play extends Phaser.Scene {
             else {selectedCardList[0].runCombinedType();}
             if (selectedCardList[1].combined == false) {selectedCardList[0].runSingleType(selectedCardList[1].cardType)}
             else {selectedCardList[1].runCombinedType();}
-            this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-550); //Need to update this to only combine cards if they should actually combine
+            if ((selectedCardList[0].charge == 'positive' && selectedCardList[1].charge == 'positive') || (selectedCardList[0].charge == 'negative' && selectedCardList[1].charge == 'negative')) {
+                console.log('same charges do not combine');
+            }
+            else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-550);}
             selectedCardList.splice(0, 2);
         }
         // Player has an option to choose 2 cards to play
