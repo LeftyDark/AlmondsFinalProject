@@ -102,6 +102,8 @@ class Play extends Phaser.Scene {
             }
             else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-550);}
             selectedCardList.splice(0, 2);
+            let firstCard = this.cardCreateSingle('positive', 'none', game.config.width/4, game.config.height-550);
+        let secondCard = this.cardCreateSingle('negative', 'none', game.config.width/2, game.config.height-550);
         }
         // Player has an option to choose 2 cards to play
         // Check is card choices are valid
@@ -125,7 +127,8 @@ class Play extends Phaser.Scene {
     determineCardType(type='none') {
         //When a new card is generated, decides what type of card is it.
         //A type can also be inputted initially to create a card of a specific type
-        let typeNum = Phaser.Math.Between(1,8);
+        //let typeNum = Phaser.Math.Between(1,8);
+        let typeNum = Phaser.Math.Between(1,5); //smaller amount for just working cards
         if (type == 'move1L' || typeNum == 1) {
             return 'move1L'}
         if (type == 'move3L' || typeNum == 2) {
