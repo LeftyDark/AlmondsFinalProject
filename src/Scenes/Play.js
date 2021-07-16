@@ -302,6 +302,8 @@ class Play extends Phaser.Scene {
             if (newCombinedCard.selected == false) {
             selectedCounter +=1;
             newCombinedCard.selected = true;
+            newCombinedCard.x = game.config.width-127;
+            newCombinedCard.cardText.setPosition(newCombinedCard.x-40, newCombinedCard.y);
             selectedCardList.push(newCombinedCard);
             console.log('card selected')}
             else {console.log('already selected')};
