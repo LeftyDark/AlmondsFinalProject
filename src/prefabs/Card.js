@@ -16,6 +16,7 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         this.enemy = 0;
         this.attack = 0;
         this.split = 0;
+        this.handPosition = 0;
         this.cardText = 'no text yet';
         
         // load sfx here

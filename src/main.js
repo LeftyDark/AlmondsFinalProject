@@ -23,7 +23,7 @@ let borderPadding = borderUISize/3;
 let player;
 // initialize variable for Deck array and hand stuff
 let cardDeck, handSize, handList;
-
+let card1, card2, card3, card4, card5;
 // intialize Music variable
 let playBGM;
 // initialize key values

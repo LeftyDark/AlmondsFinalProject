@@ -77,6 +77,11 @@ class Play extends Phaser.Scene {
         cardDeck = [];
         handList = [];
         handSize = 0;
+        card1 = false;
+        card2 = false;
+        card3 = false;
+        card4 = false;
+        card5 = false;
         selectedCardList = [];
         selectedCounter = 0;
         this.add.text(game.config.width/4, game.config.height/2-50, 'Click on cards to combine them and use their actions! \n 2 Positive and 2 Negative cards do not combine. \n Or move left and right with the arrow keys, and jump with SPACEBAR! \n Currently only the move and jump cards work.');
@@ -98,7 +103,8 @@ class Play extends Phaser.Scene {
     }
     update() {
         if (selectedCounter == 2) {
-        //Once 2 cards have been selected, runs then combines those two cards
+        //Once 2 cards have been selected, runs then combines those two cards. Keeps track of what positions in the hands open up so cards 
+        //should spawn in the same places the used cards were
             selectedCounter = 0;
             console.log(selectedCardList);
             if (selectedCardList[0].combined == false) {selectedCardList[0].runSingleType(selectedCardList[0].cardType)}
@@ -109,8 +115,60 @@ class Play extends Phaser.Scene {
                 console.log('same charges do not combine');
             }
             else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-550);}
-            selectedCardList[0].text = '';
-            selectedCardList[1].text = '';
+            selectedCardList[0].cardText.destroy();
+            selectedCardList[1].cardText.destroy();
+            selectedCardList[0].destroy();
+            selectedCardList[1].destroy();
+            switch (selectedCardList[0].handPosition) {
+                case 1:
+                    card1 = false;
+                    selectedCardList[0].handPosition = 0;
+                    break;
+                case 2:
+                    card2 = false;
+                    selectedCardList[0].handPosition = 0;
+                    break;
+                case 3:
+                    card3 = false;
+                    selectedCardList[0].handPosition = 0;
+                    break;
+                case 4:
+                    card4 = false;
+                    selectedCardList[0].handPosition = 0;
+                    break;
+                case 5:
+                    card5 = false;
+                    selectedCardList[0].handPosition = 0;
+                    break;
+                default:
+                    console.log('woah this was not in your hand')
+                    break;
+            }
+            switch (selectedCardList[1].handPosition) {
+                case 1:
+                    card1 = false;
+                    selectedCardList[1].handPosition = 0;
+                    break;
+                case 2:
+                    card2 = false;
+                    selectedCardList[1].handPosition = 0;
+                    break;
+                case 3:
+                    card3 = false;
+                    selectedCardList[1].handPosition = 0;
+                    break;
+                case 4:
+                    card4 = false;
+                    selectedCardList[1].handPosition = 0;
+                    break;
+                case 5:
+                    card5 = false;
+                    selectedCardList[1].handPosition = 0;
+                    break;
+                default:
+                    console.log('woah this was not in your hand')
+                    break;
+            }
             selectedCardList.splice(0, 2);
             //let firstCard = this.cardCreateSingle('none', 'none', game.config.width/4, game.config.height-550);
             //let secondCard = this.cardCreateSingle('none', 'none', game.config.width/2, game.config.height-550);
@@ -202,7 +260,6 @@ class Play extends Phaser.Scene {
         });        
         newCard.combinedTypeList.push(newCard.cardType);
         cardDeck.push(newCard) 
-        console.log(newCard.charge, newCard.cardType);
         return newCard
     }
     cardCombine(card1, card2, x, y) {
@@ -253,8 +310,8 @@ class Play extends Phaser.Scene {
         }
         cardDeck.push(newCombinedCard);
         console.log(newCombinedCard.combinedTypeList, newCombinedCard.move, newCombinedCard.jump, newCombinedCard.enemy, newCombinedCard.attack, newCombinedCard.split);
-        this.cardText = this.add.text(0,0, `charge is \n ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
-        this.cardText.setPosition(newCombinedCard.x-50, newCombinedCard.y);
+        newCombinedCard.cardText = this.add.text(0,0, `charge is \n ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
+        newCombinedCard.cardText.setPosition(newCombinedCard.x-50, newCombinedCard.y);
         return newCombinedCard;
     }
     playCard(card) {
@@ -264,42 +321,57 @@ class Play extends Phaser.Scene {
     }
     drawCard(deck) {
         //selects a random card out of the card deck to be drawn. If no card can be drawn, causes a game over (at this moment, just in the console).
-        if (cardDeck.length == 0) {console.log('game over')}
+        if (cardDeck.length == 0) {this.add.text(game.config.width-550, game.config.height-200,
+            'You Lose...');}
         else {
         let drawnCardNum = Math.floor(Math.random() * deck.length);
         let drawnCard = deck[drawnCardNum];
-        switch (handSize) {
-            case 0:
-                drawnCard.x = game.config.width-950;
-                drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
-                drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
-                break;
-            case 1:
-                drawnCard.x = game.config.width-800;
-                drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
-                drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
-                break;
-            case 2:
-                drawnCard.x = game.config.width-650;
-                drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
-                drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
-                break;
-            case 3:
-                drawnCard.x = game.config.width-500;
-                drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
-                drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
-                break;
-            case 4:
-                drawnCard.x = game.config.width-350;
-                drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
-                drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
-                break;
-            default:
-                'hand is full'
-                break;
-        }
         console.log( deck[drawnCardNum]);
-        deck.splice(drawnCardNum, 1);
+        if (card1 == false) {
+            drawnCard.x = game.config.width-950;
+            drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            drawnCard.handPosition = 1;
+            card1 = true;
+            deck.splice(drawnCardNum, 1);
+            return 'card made in hand position 1'
+        }
+        if (card2 == false) {
+            drawnCard.x = game.config.width-800;
+            drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            drawnCard.handPosition = 2;
+            card2 = true;
+            deck.splice(drawnCardNum, 1);
+            return 'card made in hand position 2'     
+        }
+        if (card3 == false) {
+            drawnCard.x = game.config.width-650;
+            drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            drawnCard.handPosition = 3;
+            card3 = true;
+            deck.splice(drawnCardNum, 1);   
+            return 'card made in hand position 3'     
+        }
+        if (card4 == false) {
+            drawnCard.x = game.config.width-500;
+            drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            drawnCard.handPosition = 4;
+            card4 = true;
+            deck.splice(drawnCardNum, 1); 
+            return 'card made in hand position 4'    
+        }
+        if (card5 == false) {
+            drawnCard.x = game.config.width-350;
+            drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            drawnCard.handPosition = 5;
+            card5 = true;
+            deck.splice(drawnCardNum, 1);  
+            return 'card made in hand position 5'     
+        }
         return drawnCard}
     }
     createDeck() {
