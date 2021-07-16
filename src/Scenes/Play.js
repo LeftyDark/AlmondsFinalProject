@@ -79,7 +79,7 @@ class Play extends Phaser.Scene {
         handSize = 0;
         selectedCardList = [];
         selectedCounter = 0;
-        this.add.text(game.config.width/4, game.config.height/2, 'Click on cards to combine them and use their actions! \n Or move left and right with the arrow keys, and jump with SPACEBAR! /n Currently only the move and jump cards work.');
+        this.add.text(game.config.width/4, game.config.height/2-50, 'Click on cards to combine them and use their actions! \n 2 Positive and 2 Negative cards do not combine. \n Or move left and right with the arrow keys, and jump with SPACEBAR! \n Currently only the move and jump cards work.');
         this.createDeck();
         this.updateHand();
         //let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-550);
