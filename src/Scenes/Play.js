@@ -4,7 +4,7 @@ class Play extends Phaser.Scene {
     }
     init() {}
     preload() {
-        this.load.image('card', './assets/temp_card.png');
+        this.load.image('card', './assets/smaller_temp_card.png');
         this.load.image('ground','./assets/placeholder_ground.png');
         this.load.image('player', './assets/noun_runningman_10.png');
         this.load.image('platform', './assets/placeholder_platform.png');
@@ -36,10 +36,10 @@ class Play extends Phaser.Scene {
         // this.platform.body.checkCollision.down = false;
 
         //creating player
-        this.player = new Player(this, game.config.width-400, game.config.height-100, 'dashRsprite');
-        this.player.setCollideWorldBounds(true);
-        this.physics.add.collider(this.player, this.ground);
-        this.physics.add.collider(this.player, this.platform);
+        player = new Player(this, game.config.width-400, game.config.height-100, 'dashRsprite');
+        player.setCollideWorldBounds(true);
+        this.physics.add.collider(player, this.ground);
+        this.physics.add.collider(player, this.platform);
 
         // create Goal
         this.goal = new Goal(this, game.config.width - 50, game.config.height - 350, 'goal');
@@ -79,11 +79,11 @@ class Play extends Phaser.Scene {
         handSize = 0;
         selectedCardList = [];
         selectedCounter = 0;
-        this.add.text(game.config.width/4, game.config.height/2, 'Click on cards to combine them and use their actions! \n Or move left and right with the arrow keys, and jump with SPACEBAR!');
+        this.add.text(game.config.width/4, game.config.height/2, 'Click on cards to combine them and use their actions! \n Or move left and right with the arrow keys, and jump with SPACEBAR! /n Currently only the move and jump cards work.');
         this.createDeck();
         this.updateHand();
-        let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-550);
-        let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-550);
+        //let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-550);
+        //let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-550);
         //let firstCombine = this.cardCombine(firstCard, secondCard);
         //this.playCard(firstCard);
         //this.playCard(firstCombine);
@@ -109,9 +109,11 @@ class Play extends Phaser.Scene {
                 console.log('same charges do not combine');
             }
             else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-550);}
+            selectedCardList[0].text = '';
+            selectedCardList[1].text = '';
             selectedCardList.splice(0, 2);
-            let firstCard = this.cardCreateSingle('none', 'none', game.config.width/4, game.config.height-550);
-            let secondCard = this.cardCreateSingle('none', 'none', game.config.width/2, game.config.height-550);
+            //let firstCard = this.cardCreateSingle('none', 'none', game.config.width/4, game.config.height-550);
+            //let secondCard = this.cardCreateSingle('none', 'none', game.config.width/2, game.config.height-550);
             handSize -=2;
             this.updateHand();
         }
@@ -122,18 +124,18 @@ class Play extends Phaser.Scene {
         // Repeat until Player reaches Goal, Falls off a cliff, or collides with an Enemy
         if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
             this.sound.play('appear');
-            this.player.jump();
+            player.jump();
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             this.sound.play('appear');
-            this.player.right();
+            player.right();
         }
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.sound.play('appear');
-            this.player.left();
+            player.left();
         }
         
-        if(this.collisionCheck(this.player, this.goal)) {
+        if(this.collisionCheck(player, this.goal)) {
             this.add.text(game.config.width-550, game.config.height-200,
                 'You Win!');
         }
@@ -190,8 +192,8 @@ class Play extends Phaser.Scene {
         else {cardType=type}
         let newCard;
         newCard = new Card(this, x, y, 'card', 0, cardType, cardCharge, false).setInteractive();
-        this.cardText = this.add.text(0,0, `charge is ${newCard.charge} \n type is ${newCard.cardType}`);
-        this.cardText.setPosition(newCard.x-80, newCard.y);
+        this.cardText = this.add.text(0,0, `charge is \n ${newCard.charge} \n type is \n ${newCard.cardType}`);
+        this.cardText.setPosition(newCard.x-40, newCard.y);
         newCard.body.allowGravity = false;
         newCard.on('pointerdown', function (pointer) {
             selectedCounter +=1;
@@ -251,8 +253,8 @@ class Play extends Phaser.Scene {
         }
         cardDeck.push(newCombinedCard);
         console.log(newCombinedCard.combinedTypeList, newCombinedCard.move, newCombinedCard.jump, newCombinedCard.enemy, newCombinedCard.attack, newCombinedCard.split);
-        this.cardText = this.add.text(0,0, `charge is ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
-        this.cardText.setPosition(newCombinedCard.x-80, newCombinedCard.y);
+        this.cardText = this.add.text(0,0, `charge is \n ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
+        this.cardText.setPosition(newCombinedCard.x-50, newCombinedCard.y);
         return newCombinedCard;
     }
     playCard(card) {
@@ -265,7 +267,37 @@ class Play extends Phaser.Scene {
         if (cardDeck.length == 0) {console.log('game over')}
         else {
         let drawnCardNum = Math.floor(Math.random() * deck.length);
-        let drawnCard = deck[drawnCardNum]
+        let drawnCard = deck[drawnCardNum];
+        switch (handSize) {
+            case 0:
+                drawnCard.x = game.config.width-950;
+                drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+                drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+                break;
+            case 1:
+                drawnCard.x = game.config.width-800;
+                drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+                drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+                break;
+            case 2:
+                drawnCard.x = game.config.width-650;
+                drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+                drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+                break;
+            case 3:
+                drawnCard.x = game.config.width-500;
+                drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+                drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+                break;
+            case 4:
+                drawnCard.x = game.config.width-350;
+                drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+                drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+                break;
+            default:
+                'hand is full'
+                break;
+        }
         console.log( deck[drawnCardNum]);
         deck.splice(drawnCardNum, 1);
         return drawnCard}
