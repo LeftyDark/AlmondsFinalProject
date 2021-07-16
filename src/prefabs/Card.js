@@ -16,9 +16,11 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         this.enemy = 0;
         this.attack = 0;
         this.split = 0;
-
+        this.cardText = 'no text yet';
+        
         // load sfx here
         this.sfxFlip = scene.sound.add('flip');
+        this.appear = scene.sound.add('appear');
     }
 
     create() {
@@ -28,6 +30,7 @@ class Card extends Phaser.Physics.Arcade.Sprite {
     reset() {}
 
     runSingleType (type) {
+        this.appear.play();
         //The function that is use to run one single card, or one part of a combined card
         if (type == 'move1L') {
             //place move function here running to move 1L
@@ -72,6 +75,7 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         }
     }
     runCombinedType() {
+        this.appear.play();
         if (this.move < 0) {
             let runLeft = Math.abs(this.move)
             for (let i = 0; i < runLeft; i++) {player.left();}
