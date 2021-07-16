@@ -25,23 +25,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     jump() {
         this.body.velocity.y -= 2000;
         if (this.facing == 'right')
-        {player.anims.play('playerJumpR', 8, true);}
-        else {player.anims.play('playerJumpL', 8, true)}
+        {this.anims.play('playerJumpR', 8, true);}
+        else {this.anims.play('playerJumpL', 8, true)}
     }
     left() {
         this.body.velocity.x -= 100;
         if (this.body.velocity.x <0) {
             this.facing = 'left';
         }
-        player.anims.play('playerDashL', 8, true);
-        setTimeout(() => {  player.body.velocity.x = 0 }, 1000);
+        this.anims.play('playerDashL', 8, true);
+        setTimeout(() => {  this.body.velocity.x = 0 }, 1000);
     }
     right() {
         this.body.velocity.x += 100;
         if (this.body.velocity.x >0) {
             this.facing = 'right';
         }
-        player.anims.play('playerDashR', 8, true);
-        setTimeout(() => {  player.body.velocity.x = 0 }, 1000);
+        this.anims.play('playerDashR', 8, true);
+        setTimeout(() => {  this.body.velocity.x = 0 }, 1000);
     }
 }

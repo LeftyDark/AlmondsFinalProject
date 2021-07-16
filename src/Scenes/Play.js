@@ -36,12 +36,15 @@ class Play extends Phaser.Scene {
         // this.platform.body.checkCollision.down = false;
 
         //creating player
-        player = new Player(this, game.config.width-400, game.config.height-100, 'dashRsprite');
-        player.setCollideWorldBounds(true);
-        this.physics.add.collider(player, this.ground);
-        this.physics.add.collider(player, this.platform);
+        this.player = new Player(this, game.config.width-400, game.config.height-100, 'dashRsprite');
+        this.player.setCollideWorldBounds(true);
+        this.physics.add.collider(this.player, this.ground);
+        this.physics.add.collider(this.player, this.platform);
 
         // create Goal
+        this.goal = new Goal(this, game.config.width - 50, game.config.height - 350, 'goal');
+        this.goal.body.immovable = true;
+        this.goal.body.allowGravity = false;
 
         //creating animations
         this.dashRAni = this.anims.create({
@@ -119,16 +122,31 @@ class Play extends Phaser.Scene {
         // Repeat until Player reaches Goal, Falls off a cliff, or collides with an Enemy
         if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
             this.sound.play('appear');
-            player.jump();
+            this.player.jump();
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             this.sound.play('appear');
-            player.right();
+            this.player.right();
         }
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.sound.play('appear');
-            player.left();
+            this.player.left();
         }
+        
+        if(this.collisionCheck(this.player, this.goal)) {
+            this.add.text(game.config.width-550, game.config.height-200,
+                'You Win!');
+        }
+    }
+
+    collisionCheck(first, second) {
+        if(first.x < second.x + second.width &&
+            first.x + first.width > second.x &&
+            first.y < second.y + second.height &&
+            first.height + first.y > second.y) {
+                return true;
+            }
+            return false;
     }
 
     determineCardType(type='none') {
