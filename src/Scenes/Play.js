@@ -114,7 +114,7 @@ class Play extends Phaser.Scene {
             if ((selectedCardList[0].charge == 'positive' && selectedCardList[1].charge == 'positive') || (selectedCardList[0].charge == 'negative' && selectedCardList[1].charge == 'negative')) {
                 console.log('same charges do not combine');
             }
-            else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width*0.8, game.config.height-550);}
+            else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width-5000, game.config.height-550);}
             selectedCardList[0].cardText.destroy();
             selectedCardList[1].cardText.destroy();
             selectedCardList[0].destroy();
@@ -254,12 +254,15 @@ class Play extends Phaser.Scene {
         this.cardText.setPosition(newCard.x-40, newCard.y);
         newCard.body.allowGravity = false;
         newCard.on('pointerdown', function (pointer) {
+            if (newCard.selected == false) {
             selectedCounter +=1;
+            newCard.selected = true;
             selectedCardList.push(newCard);
-            console.log('card selected');
-        });        
+            console.log('card selected');}
+            else {console.log('already selected')}
+        });
         newCard.combinedTypeList.push(newCard.cardType);
-        cardDeck.push(newCard) 
+        cardDeck.push(newCard);
         return newCard
     }
     cardCombine(card1, card2, x, y) {
@@ -292,9 +295,12 @@ class Play extends Phaser.Scene {
         newCombinedCard = new Card(this, x,y, 'card', 0, card1.cardType, newCharge, true).setInteractive();
         newCombinedCard.body.allowGravity = false;
         newCombinedCard.on('pointerdown', function (pointer) {
+            if (newCombinedCard.selected == false) {
             selectedCounter +=1;
+            newCombinedCard.selected = true;
             selectedCardList.push(newCombinedCard);
-            console.log('card selected')
+            console.log('card selected')}
+            else {console.log('already selected')};
         });        
         for (let type of card1.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
         for (let type of card2.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
@@ -312,6 +318,7 @@ class Play extends Phaser.Scene {
         console.log(newCombinedCard.combinedTypeList, newCombinedCard.move, newCombinedCard.jump, newCombinedCard.enemy, newCombinedCard.attack, newCombinedCard.split);
         newCombinedCard.cardText = this.add.text(0,0, `charge is \n ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
         newCombinedCard.cardText.setPosition(newCombinedCard.x-50, newCombinedCard.y);
+        console.log(newCombinedCard.x, newCombinedCard.y);
         return newCombinedCard;
     }
     playCard(card) {
@@ -329,8 +336,11 @@ class Play extends Phaser.Scene {
         console.log( deck[drawnCardNum]);
         if (card1 == false) {
             drawnCard.x = game.config.width-950;
-            drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+            if (drawnCard.combined == false)
+            {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
+            else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            console.log(drawnCard.x);
             drawnCard.handPosition = 1;
             card1 = true;
             deck.splice(drawnCardNum, 1);
@@ -338,8 +348,11 @@ class Play extends Phaser.Scene {
         }
         if (card2 == false) {
             drawnCard.x = game.config.width-800;
-            drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+            if (drawnCard.combined == false)
+            {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
+            else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            console.log(drawnCard.x);
             drawnCard.handPosition = 2;
             card2 = true;
             deck.splice(drawnCardNum, 1);
@@ -347,8 +360,11 @@ class Play extends Phaser.Scene {
         }
         if (card3 == false) {
             drawnCard.x = game.config.width-650;
-            drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+            if (drawnCard.combined == false)
+            {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
+            else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            console.log(drawnCard.x);
             drawnCard.handPosition = 3;
             card3 = true;
             deck.splice(drawnCardNum, 1);   
@@ -356,8 +372,11 @@ class Play extends Phaser.Scene {
         }
         if (card4 == false) {
             drawnCard.x = game.config.width-500;
-            drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+            if (drawnCard.combined == false)
+            {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
+            else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            console.log(drawnCard.x);
             drawnCard.handPosition = 4;
             card4 = true;
             deck.splice(drawnCardNum, 1); 
@@ -365,8 +384,11 @@ class Play extends Phaser.Scene {
         }
         if (card5 == false) {
             drawnCard.x = game.config.width-350;
-            drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`);
+            if (drawnCard.combined == false)
+            {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
+            else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            console.log(drawnCard.x);
             drawnCard.handPosition = 5;
             card5 = true;
             deck.splice(drawnCardNum, 1);  
