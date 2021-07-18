@@ -24,9 +24,12 @@ let player;
 // initialize variable for Deck array and hand stuff
 let cardDeck, handSize, handList;
 let card1, card2, card3, card4, card5;
+
+//initialize variables for split card  and its functions
+let isSplitting, splitNum, cardSelected;
 // intialize Music variable
 let playBGM;
 // initialize key values
-let keySPACE, keyRIGHT, keyLEFT;
+let keySPACE, keyRIGHT, keyLEFT, key1, key2, key3, key4, key5;
 
 let selectedCounter, selectedCardList;

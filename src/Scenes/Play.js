@@ -77,6 +77,9 @@ class Play extends Phaser.Scene {
         cardDeck = [];
         handList = [];
         handSize = 0;
+        isSplitting = false;
+        splitNum = 0;
+        cardSelected = false;
         card1 = false;
         card2 = false;
         card3 = false;
@@ -84,7 +87,7 @@ class Play extends Phaser.Scene {
         card5 = false;
         selectedCardList = [];
         selectedCounter = 0;
-        this.add.text(game.config.width/4, game.config.height/2-50, 'Click on cards to combine them and use their actions! \n 2 Positive and 2 Negative cards do not combine. \n Or move left and right with the arrow keys, and jump with SPACEBAR! \n Currently only the move and jump cards work.');
+        this.add.text(game.config.width/4, game.config.height/2-50, 'Click on cards to combine them and use their actions! \n 2 Positive and 2 Negative cards do not combine. \n Or move left and right with the arrow keys, and jump with SPACEBAR! \n Currently only the move and jump cards work. \n The split card partially works, type the number of a card in your hand \n to split it if it is not combined.');
         this.add.text(game.config.width-670, game.config.height-680, 'Hand');
         this.add.text(game.config.width-220, game.config.height-680, '1st Selected Card');
         this.createDeck();
@@ -102,6 +105,11 @@ class Play extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
+        key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
+        key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
+        key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
+        key5 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE);
     }
     update() {
         if (selectedCounter == 2) {
@@ -109,18 +117,10 @@ class Play extends Phaser.Scene {
         //should spawn in the same places the used cards were
             selectedCounter = 0;
             console.log(selectedCardList);
-            if (selectedCardList[0].combined == false) {selectedCardList[0].runSingleType(selectedCardList[0].cardType)}
-            else {selectedCardList[0].runCombinedType();}
-            if (selectedCardList[1].combined == false) {selectedCardList[0].runSingleType(selectedCardList[1].cardType)}
-            else {selectedCardList[1].runCombinedType();}
             if ((selectedCardList[0].charge == 'positive' && selectedCardList[1].charge == 'positive') || (selectedCardList[0].charge == 'negative' && selectedCardList[1].charge == 'negative')) {
                 console.log('same charges do not combine');
             }
             else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width-5000, game.config.height-550);}
-            selectedCardList[0].cardText.destroy();
-            selectedCardList[1].cardText.destroy();
-            selectedCardList[0].destroy();
-            selectedCardList[1].destroy();
             switch (selectedCardList[0].handPosition) {
                 case 1:
                     card1 = false;
@@ -171,15 +171,27 @@ class Play extends Phaser.Scene {
                     console.log('woah this was not in your hand')
                     break;
             }
-            selectedCardList.splice(0, 2);
             //let firstCard = this.cardCreateSingle('none', 'none', game.config.width/4, game.config.height-550);
             //let secondCard = this.cardCreateSingle('none', 'none', game.config.width/2, game.config.height-550);
+            selectedCardList[0].cardText.destroy();
+            selectedCardList[1].cardText.destroy();
             handSize -=2;
             this.updateHand();
+            if (selectedCardList[0].combined == false) {selectedCardList[0].runSingleType(selectedCardList[0].cardType)}
+            else {selectedCardList[0].runCombinedType();}
+            if (selectedCardList[1].combined == false) {selectedCardList[0].runSingleType(selectedCardList[1].cardType)}
+            else {selectedCardList[1].runCombinedType();}
+            selectedCardList[0].destroy();
+            selectedCardList[1].destroy();
+            selectedCardList.splice(0, 2);
         }
         // Player has an option to choose 2 cards to play
         // Check is card choices are valid
 
+        //run this function that runs splitting after a split card is played
+        if (isSplitting == true) {
+            this.splitCard();
+        }
         // Execute all comands on card
         // Repeat until Player reaches Goal, Falls off a cliff, or collides with an Enemy
         if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
@@ -256,14 +268,16 @@ class Play extends Phaser.Scene {
         this.cardText.setPosition(newCard.x-40, newCard.y);
         newCard.body.allowGravity = false;
         newCard.on('pointerdown', function (pointer) {
-            if (newCard.selected == false) {
+            if (newCard.selected == false && isSplitting == false) {
             selectedCounter +=1;
             newCard.selected = true;
             newCard.x = game.config.width-127;
             this.cardText.setPosition(newCard.x-40, newCard.y);
             selectedCardList.push(newCard);
+            this.handNum = handList.indexOf(newCard);
+            handList.splice(this.handNum, 1);
             console.log('card selected');}
-            else {console.log('already selected')}
+            else {console.log('already selected or currently using a split card')}
         });
         newCard.combinedTypeList.push(newCard.cardType);
         cardDeck.push(newCard);
@@ -299,14 +313,16 @@ class Play extends Phaser.Scene {
         newCombinedCard = new Card(this, x,y, 'card', 0, card1.cardType, newCharge, true).setInteractive();
         newCombinedCard.body.allowGravity = false;
         newCombinedCard.on('pointerdown', function (pointer) {
-            if (newCombinedCard.selected == false) {
+            if (newCombinedCard.selected == false && isSplitting == false) {
             selectedCounter +=1;
             newCombinedCard.selected = true;
             newCombinedCard.x = game.config.width-127;
             newCombinedCard.cardText.setPosition(newCombinedCard.x-40, newCombinedCard.y);
             selectedCardList.push(newCombinedCard);
+            this.handNum = handList.indexOf(newCombinedCard);
+            handList.splice(this.handNum, 1);
             console.log('card selected')}
-            else {console.log('already selected')};
+            else {console.log('already selected or currently using a split card')};
         });        
         for (let type of card1.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
         for (let type of card2.combinedTypeList) {newCombinedCard.combinedTypeList.push(type)};
@@ -339,6 +355,7 @@ class Play extends Phaser.Scene {
         else {
         let drawnCardNum = Math.floor(Math.random() * deck.length);
         let drawnCard = deck[drawnCardNum];
+        handList.push(drawnCard)
         console.log( deck[drawnCardNum]);
         if (card1 == false) {
             drawnCard.x = game.config.width-950;
@@ -427,6 +444,94 @@ class Play extends Phaser.Scene {
         while (handSize < 5) {
             this.drawCard(cardDeck);
             handSize +=1;
+        }
+    }
+    splitCard() {
+        //This functions splits a card in the hand and only runs when isSplitting is set to be true by a split card.
+        let selectedCard;
+        //First, select a card to split by typing the number of the card of that position in your hand
+        if (Phaser.Input.Keyboard.JustDown(key1) && cardSelected == false) {
+            for (let card of handList) {
+                if (card.handPosition == 1) {
+                    selectedCard = card;
+                    cardSelected = true;
+                }
+            }
+        }
+        if (Phaser.Input.Keyboard.JustDown(key2) && cardSelected == false) {
+            for (let card of handList) {
+                if (card.handPosition == 2) {
+                    cardSelected = true;
+                    selectedCard = card;
+                }
+            }
+        }
+        if (Phaser.Input.Keyboard.JustDown(key3) && cardSelected == false) {
+            for (let card of handList) {
+                if (card.handPosition == 3) {
+                    cardSelected = true;
+                    selectedCard = card;
+                }
+            }
+        }
+        if (Phaser.Input.Keyboard.JustDown(key4) && cardSelected == false) {
+            for (let card of handList) {
+                if (card.handPosition == 4) {
+                    cardSelected = true;
+                    selectedCard = card;
+                }
+            }
+        }
+        if (Phaser.Input.Keyboard.JustDown(key5) && cardSelected == false) {
+            for (let card of handList) {
+                if (card.handPosition == 5) {
+                    cardSelected = true;
+                    selectedCard = card;
+                }
+            }
+        }
+        if (cardSelected == true) {
+            isSplitting = false;
+            cardSelected = false;
+            console.log(selectedCard);
+            if (selectedCard.combined == false) {
+                switch (selectedCard.handPosition) {
+                    case 1:
+                        card1 = false;
+                        selectedCard.handPosition = 0;
+                        break;
+                    case 2:
+                        card2 = false;
+                        selectedCard.handPosition = 0;
+                        break;
+                    case 3:
+                        card3 = false;
+                        selectedCard.handPosition = 0;
+                        break;
+                    case 4:
+                        card4 = false;
+                        selectedCard.handPosition = 0;
+                        break;
+                    case 5:
+                        card5 = false;
+                        selectedCard.handPosition = 0;
+                        break;
+                    default:
+                        console.log('woah this was not in your hand')
+                        break;
+                }
+                this.handNum = handList.indexOf(selectedCard);
+                handList.splice(this.handNum, 1);
+                selectedCard.cardText.destroy();
+                selectedCard.destroy();
+                handSize-=1;
+                this.updateHand();
+            }
+            if (selectedCard.combined == true) {
+                console.log('time to split a combined card o deer')
+            }
+            splitNum-=1;
+            if (splitNum > 0) {isSplitting = true;}
         }
     }
 }

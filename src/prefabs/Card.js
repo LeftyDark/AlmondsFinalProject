@@ -71,7 +71,8 @@ class Card extends Phaser.Physics.Arcade.Sprite {
             console.log('attack launched');
         }
         if (type == 'split') {
-            //place split function here
+            splitNum +=1;
+            this.splitFunc();
             console.log('cardSplit');
         }
     }
@@ -96,8 +97,14 @@ class Card extends Phaser.Physics.Arcade.Sprite {
             }
         }
         if (this.split > 0) {
-            for (let i = 0; i < this.split; i++) {//put split function here
+            for (let i = 0; i < this.split; i++) {
+                splitNum+=1;
+                this.splitFunc();
             }
         }
+    }
+    splitFunc() {
+        //This function actually just changes isSplitting to true, so within play.js and update the actual function that does the splitting will run.
+        isSplitting = true;
     }
 }
