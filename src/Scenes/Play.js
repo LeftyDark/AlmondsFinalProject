@@ -18,6 +18,9 @@ class Play extends Phaser.Scene {
     create() {
         this.cameras.main.setBackgroundColor('#CCC');
 
+        //game.settings.enemyspawned = false;
+        //game.settings.enemyspawncommand = false;
+
         //creating ground
         this.ground = this.add.group();
         for( let i = 0; i < game.config.width; i += 20) {
@@ -187,6 +190,12 @@ class Play extends Phaser.Scene {
         }
         // Player has an option to choose 2 cards to play
         // Check is card choices are valid
+
+        // enemy spawn if card is chosen
+        //if (game.settings.enemyspawncommand) {
+        //    //this.enemy = new Enemy(this, game.config.width - 50, game.config.height - 350, 'enemy');
+        //    game.settings.enemyspawncommand = false;
+        //}
 
         //run this function that runs splitting after a split card is played
         if (isSplitting == true) {
