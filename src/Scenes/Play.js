@@ -556,7 +556,50 @@ class Play extends Phaser.Scene {
                 this.updateHand();
             }
             if (selectedCard.combined == true) {
-                console.log('time to split a combined card o deer')
+                switch (selectedCard.handPosition) {
+                    case 1:
+                        card1 = false;
+                        selectedCard.handPosition = 0;
+                        break;
+                    case 2:
+                        card2 = false;
+                        selectedCard.handPosition = 0;
+                        break;
+                    case 3:
+                        card3 = false;
+                        selectedCard.handPosition = 0;
+                        break;
+                    case 4:
+                        card4 = false;
+                        selectedCard.handPosition = 0;
+                        break;
+                    case 5:
+                        card5 = false;
+                        selectedCard.handPosition = 0;
+                        break;
+                    default:
+                        console.log('woah this was not in your hand')
+                        break;
+                }
+                this.handNum = handList.indexOf(selectedCard);
+                handList.splice(this.handNum, 1);
+                let lastAddedType = selectedCard.combinedTypeList.pop();
+                console.log(lastAddedType, selectedCard.combinedTypeList);
+                this.cardCreateSingle(selectedCard.charge, lastAddedType, game.config.width-5000, game.config.height-550);
+                if (lastAddedType == 'move1L') {selectedCard.move +=1}
+                if (lastAddedType == 'move3L') {selectedCard.move +=3}
+                if (lastAddedType == 'move1R') {selectedCard.move -=1}
+                if (lastAddedType == 'move3R') {selectedCard.move -=3}
+                if (lastAddedType == 'jump') {selectedCard.jump -=1}
+                if (lastAddedType == 'enemy') {selectedCard.enemy -=1}
+                if (lastAddedType == 'attack') {selectedCard.attack -=1}
+                if (lastAddedType == 'split') {selectedCard.split -=1}
+                selectedCard.cardText.destroy();
+                selectedCard.x = game.config.width-5000;
+                cardDeck.push(selectedCard);
+                console.log(cardDeck);
+                handSize -=1;
+                this.updateHand();
             }
             splitNum-=1;
             if (splitNum > 0) {isSplitting = true;}
