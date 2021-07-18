@@ -16,6 +16,11 @@ class Play extends Phaser.Scene {
         //running person by Kathleen Black from the Noun Project
     }
     create() {
+        game.settings = {
+            enemyspawncommand: false,
+            enemyexterminatecommand: false
+        };
+
         this.cameras.main.setBackgroundColor('#CCC');
 
         //game.settings.enemyspawned = false;
@@ -192,10 +197,21 @@ class Play extends Phaser.Scene {
         // Check is card choices are valid
 
         // enemy spawn if card is chosen
-        //if (game.settings.enemyspawncommand) {
-        //    //this.enemy = new Enemy(this, game.config.width - 50, game.config.height - 350, 'enemy');
-        //    game.settings.enemyspawncommand = false;
-        //}
+        if (game.settings.enemyspawncommand) {
+            this.enemy = new Enemy(this, game.config.width - 50, game.config.height - 350, 'enemy');
+            this.enemy.setCollideWorldBounds(true);
+            this.physics.add.collider(this.enemy, this.ground);
+            this.physics.add.collider(this.enemy, this.platform);
+            game.settings = {
+                enemyspawncommand: false
+            };
+        }
+        if (game.settings.enemyexterminatecommand) {
+            this.enemy.exterminate();
+            game.settings = {
+                enemyextermiantecommand: false
+            };
+        }
 
         //run this function that runs splitting after a split card is played
         if (isSplitting == true) {
@@ -220,16 +236,17 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width-550, game.config.height-200,
                 'You Win!');
         }
+        //if(this.collisionCheck(player, this.enemy)) {
+        //    this.add.text(game.config.width-550, game.config.height-200,
+        //        'You Lose!');
+        //}
     }
 
     collisionCheck(first, second) {
-        if(first.x < second.x + second.width &&
+        return (first.x < second.x + second.width &&
             first.x + first.width > second.x &&
             first.y < second.y + second.height &&
-            first.height + first.y > second.y) {
-                return true;
-            }
-            return false;
+            first.height + first.y > second.y);
     }
 
     determineCardType(type='none') {
