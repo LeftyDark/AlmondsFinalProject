@@ -198,7 +198,9 @@ class Play extends Phaser.Scene {
 
         // enemy spawn if card is chosen
         if (game.settings.enemyspawncommand) {
-            this.enemy = new Enemy(this, game.config.width - 50, game.config.height - 350, 'enemy');
+            var enemyX = Phaser.Math.Between(0,1000); // game.config.width - 50
+            var enemyY = Phaser.Math.Between(0,1000); // game.config.height - 350
+            this.enemy = new Enemy(this, enemyX, enemyY, 'enemy');
             this.enemy.setCollideWorldBounds(true);
             this.physics.add.collider(this.enemy, this.ground);
             this.physics.add.collider(this.enemy, this.platform);
@@ -207,7 +209,7 @@ class Play extends Phaser.Scene {
             };
         }
         if (game.settings.enemyexterminatecommand) {
-            this.enemy.exterminate();
+            //this.enemy.exterminate();
             game.settings = {
                 enemyextermiantecommand: false
             };
