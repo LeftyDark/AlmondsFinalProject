@@ -22,12 +22,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // still a blueprint
 
         // move back and forth?
-        this.body.velocity -= 1000;
+        //this.body.velocity -= 1000;
         // after some time...
         // loop through
-        this.body.velocity += 2000;
-        this.body.velocity -= 2000;
+        //this.body.velocity += 2000;
+        //this.body.velocity -= 2000;
     }
         
-    reset() {}
+    exterminate() {
+        this.x = 9999999;
+        this.y = 9999999;
+    }
 }

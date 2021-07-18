@@ -65,10 +65,16 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         if (type == 'enemy') {
             //place enemy creation function here
             console.log('new enemy created');
+            game.settings = {
+                enemyspawncommand: true
+            };
         }
         if (type == 'attack') {
             //place attack function here
             console.log('attack launched');
+            game.settings = {
+                enemyexterminatecommand: true
+            };
         }
         if (type == 'split') {
             splitNum +=1;
