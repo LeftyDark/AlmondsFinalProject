@@ -30,7 +30,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
         
     exterminate() {
-        this.x = 9999999;
-        this.y = 9999999;
+        this.y = 1000;
     }
 }
