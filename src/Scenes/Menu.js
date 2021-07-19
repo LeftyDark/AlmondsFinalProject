@@ -13,6 +13,8 @@ class Menu extends Phaser.Scene {
         playBGM = this.sound.add('BGMplay');
         playBGM.loop = true;
         playBGM.play();
+        this.spacebarCounter = 0;
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
     update() {
         // PLAY button UI?

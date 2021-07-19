@@ -100,6 +100,7 @@ class Play extends Phaser.Scene {
         this.add.text(game.config.width-220, game.config.height-680, '1st Selected Card');
         this.createDeck();
         this.updateHand();
+        deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`);
         //let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-550);
         //let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-550);
         //let firstCombine = this.cardCombine(firstCard, secondCard);
@@ -192,6 +193,8 @@ class Play extends Phaser.Scene {
             selectedCardList[0].destroy();
             selectedCardList[1].destroy();
             selectedCardList.splice(0, 2);
+            deckText.destroy();
+            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`);
         }
         // Player has an option to choose 2 cards to play
         // Check is card choices are valid
@@ -600,6 +603,8 @@ class Play extends Phaser.Scene {
                 handSize -=1;
                 this.updateHand();
             }
+            deckText.destroy();
+            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`);
             splitNum-=1;
             if (splitNum > 0) {isSplitting = true;}
         }
