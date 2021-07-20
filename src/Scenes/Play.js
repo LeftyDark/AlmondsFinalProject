@@ -9,6 +9,8 @@ class Play extends Phaser.Scene {
         this.load.image('player', './assets/noun_runningman_10.png');
         this.load.image('platform', './assets/placeholder_platform.png');
         this.load.image('wall', './assets/placeholder_wall.png');
+        this.load.image('smallplat', './assets/mini_platform.png');
+        this.load.image('miniwall', './assets/mini_wall.png');
         this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 7});
         this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 7});
         this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 14});
@@ -37,28 +39,46 @@ class Play extends Phaser.Scene {
         }
         //creating a platform
         this.platform = this.add.group();
-        let plat = this.physics.add.sprite(game.config.width-512, game.config.height-300, 'platform').setOrigin(0);
+        let plat = this.physics.add.sprite(game.config.width-1070, game.config.height-300, 'platform').setOrigin(0);
         plat.body.immovable = true;
         plat.body.allowGravity = false;
+        this.plat2 = this.physics.add.sprite(game.config.width-100, game.config.height-275, 'platform').setOrigin(0);
+        this.plat2.body.immovable = true;
+        this.plat2.body.allowGravity = false;
+        this.miniplat = this.physics.add.sprite(game.config.width+650, game.config.height-400, 'smallplat').setOrigin(0);
+        this.miniplat.body.immovable = true;
+        this.miniplat.body.allowGravity = false;
+        this.miniplat2 = this.physics.add.sprite(game.config.width+900, game.config.height-250, 'smallplat').setOrigin(0);
+        this.miniplat2.body.immovable = true;
+        this.miniplat2.body.allowGravity = false;
         this.platform.add(plat);
+        this.platform.add(this.plat2);
+        this.platform.add(this.miniplat);
+        this.platform.add(this.miniplat2);
         // this.platform.body.checkCollision.down = false;
         //creating walls to stop the player from moving past the edges
+        this.wall = this.add.group();
         this.wall1 = this.physics.add.sprite(game.config.width-1024, game.config.height-700, 'wall').setOrigin(0);
         this.wall1.body.immovable = true;
         this.wall1.body.allowGravity = false;
+        this.wall.add(this.wall1);
         this.wall2 = this.physics.add.sprite(game.config.width+1000, game.config.height-700, 'wall').setOrigin(0);
         this.wall2.body.immovable = true;
         this.wall2.body.allowGravity = false;
+        this.wall.add(this.wall2);
+        this.wall3 = this.physics.add.sprite(game.config.width-350, game.config.height-400, 'wall').setOrigin(0);
+        this.wall3.body.immovable = true;
+        this.wall3.body.allowGravity = false;
+        this.wall.add(this.wall3);
         //creating player
-        player = new Player(this, game.config.width-400, game.config.height-100, 'dashRsprite');
+        player = new Player(this, game.config.width-500, game.config.height-100, 'dashRsprite');
         //player.setCollideWorldBounds(true);
         this.physics.add.collider(player, this.ground);
         this.physics.add.collider(player, this.platform);
-        this.physics.add.collider(player, this.wall1);
-        this.physics.add.collider(player, this.wall2);
+        this.physics.add.collider(player, this.wall);
 
         // create Goal
-        this.goal = new Goal(this, game.config.width - 50, game.config.height - 350, 'goal');
+        this.goal = new Goal(this, game.config.width+750, game.config.height - 450, 'goal');
         this.goal.body.immovable = true;
         this.goal.body.allowGravity = false;
 
@@ -324,6 +344,7 @@ class Play extends Phaser.Scene {
         if(this.collisionCheck(player, this.goal)) {
             this.add.text(game.config.width-550, game.config.height-200,
                 'You Win!');
+            this.add.text(game.config.width+474, game.config.height-200, 'You Win!');
         }
         //if(this.collisionCheck(player, this.enemy)) {
         //    this.add.text(game.config.width-550, game.config.height-200,
