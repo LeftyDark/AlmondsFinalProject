@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.image('ground','./assets/placeholder_ground.png');
         this.load.image('player', './assets/noun_runningman_10.png');
         this.load.image('platform', './assets/placeholder_platform.png');
+        this.load.image('wall', './assets/placeholder_wall.png');
         this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 7});
         this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 7});
         this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 14});
@@ -28,26 +29,33 @@ class Play extends Phaser.Scene {
 
         //creating ground
         this.ground = this.add.group();
-        for( let i = 0; i < game.config.width; i += 20) {
+        for( let i = 0; i < game.config.width+1500; i += 20) {
             let groundTile = this.physics.add.sprite(i, game.config.height - 20, 'ground').setOrigin(0);
             groundTile.body.immovable = true;
             groundTile.body.allowGravity = false;
             this.ground.add(groundTile);
         }
-
-        //creating a platform with no bottom collision
+        //creating a platform
         this.platform = this.add.group();
         let plat = this.physics.add.sprite(game.config.width-512, game.config.height-300, 'platform').setOrigin(0);
         plat.body.immovable = true;
         plat.body.allowGravity = false;
         this.platform.add(plat);
         // this.platform.body.checkCollision.down = false;
-
+        //creating walls to stop the player from moving past the edges
+        this.wall1 = this.physics.add.sprite(game.config.width-1024, game.config.height-700, 'wall').setOrigin(0);
+        this.wall1.body.immovable = true;
+        this.wall1.body.allowGravity = false;
+        this.wall2 = this.physics.add.sprite(game.config.width+1000, game.config.height-700, 'wall').setOrigin(0);
+        this.wall2.body.immovable = true;
+        this.wall2.body.allowGravity = false;
         //creating player
         player = new Player(this, game.config.width-400, game.config.height-100, 'dashRsprite');
-        player.setCollideWorldBounds(true);
+        //player.setCollideWorldBounds(true);
         this.physics.add.collider(player, this.ground);
         this.physics.add.collider(player, this.platform);
+        this.physics.add.collider(player, this.wall1);
+        this.physics.add.collider(player, this.wall2);
 
         // create Goal
         this.goal = new Goal(this, game.config.width - 50, game.config.height - 350, 'goal');
@@ -80,7 +88,6 @@ class Play extends Phaser.Scene {
             repeat: 0
         });
         
-
         //creating cards and deck
         cardDeck = [];
         handList = [];
@@ -93,11 +100,14 @@ class Play extends Phaser.Scene {
         card3 = false;
         card4 = false;
         card5 = false;
+        cardPosition = 0;
         selectedCardList = [];
         selectedCounter = 0;
         this.add.text(game.config.width/4, game.config.height/2-50, 'Click on cards to combine them and use their actions! \n 2 Positive and 2 Negative cards do not combine. \n Or move left and right with the arrow keys, and jump with SPACEBAR! \n Currently only the move and jump cards work. \n The split card partially works, type the number of a card in your hand \n to split it if it is not combined.');
         this.add.text(game.config.width-670, game.config.height-680, 'Hand');
         this.add.text(game.config.width-220, game.config.height-680, '1st Selected Card');
+        this.add.text(game.config.width+354, game.config.height-680, 'Hand');
+        this.add.text(game.config.width+804, game.config.height-680, '1st Selected Card');
         this.createDeck();
         this.updateHand();
         deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`);
@@ -119,8 +129,81 @@ class Play extends Phaser.Scene {
         key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
         key5 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE);
+        
+        //Changing how the camera works to enable longer levels.
+        camera = this.cameras.main;
     }
     update() {
+        //Move camera if player moves off the right edge of the screen. Also moves cards to be on the right screen.
+        if (player.x >1024 && player.x<2048) {
+            camera.centerOnX(1536);
+            cardPosition = 1;
+        }
+        if (player.x <1025) {
+            camera.centerOnX(512);
+            cardPosition = 0;
+        }
+        if (cardPosition == 0) {
+            deckText.x = game.config.width-950;
+            for (let card of handList) {
+                switch (card.handPosition) {
+                    case 1:
+                        card.x = game.config.width-950;
+                        card.cardText.setPosition(card.x-40, card.y);
+                        break;
+                    case 2:
+                        card.x = game.config.width-800;
+                        card.cardText.setPosition(card.x-40, card.y);
+                        break;
+                    case 3:
+                        card.x = game.config.width-650;
+                        card.cardText.setPosition(card.x-40, card.y);
+                        break;
+                    case 4:
+                        card.x = game.config.width-500;
+                        card.cardText.setPosition(card.x-40, card.y);
+                        break;
+                    case 5:
+                        card.x = game.config.width-350;
+                        card.cardText.setPosition(card.x-40, card.y);
+                        break;
+                    default:
+                        console.log('where is this card lmao')
+                        break;
+                }
+            }
+        }
+        if (cardPosition == 1) {
+            deckText.x = game.config.width+74;
+            for (let card of handList) {
+                switch (card.handPosition) {
+                    case 1:
+                        card.x = game.config.width+74;
+                        card.cardText.setPosition(card.x-40, card.y);
+                        break;
+                    case 2:
+                        card.x = game.config.width+224;
+                        card.cardText.setPosition(card.x-40, card.y);
+                        break;
+                    case 3:
+                        card.x = game.config.width+374;
+                        card.cardText.setPosition(card.x-40, card.y);
+                        break;
+                    case 4:
+                        card.x = game.config.width+524;
+                        card.cardText.setPosition(card.x-40, card.y);
+                        break;
+                    case 5:
+                        card.x = game.config.width+674;
+                        card.cardText.setPosition(card.x-40, card.y);
+                        break;
+                    default:
+                        console.log('where is this card lmao')
+                        break;
+                }
+            }
+        }
+
         if (selectedCounter == 2) {
         //Once 2 cards have been selected, runs then combines those two cards. Keeps track of what positions in the hands open up so cards 
         //should spawn in the same places the used cards were
@@ -301,7 +384,8 @@ class Play extends Phaser.Scene {
             if (newCard.selected == false && isSplitting == false) {
             selectedCounter +=1;
             newCard.selected = true;
-            newCard.x = game.config.width-127;
+            if (cardPosition == 0) {newCard.x = game.config.width-127;};
+            if (cardPosition == 1) {newCard.x = game.config.width+897;};
             this.cardText.setPosition(newCard.x-40, newCard.y);
             selectedCardList.push(newCard);
             this.handNum = handList.indexOf(newCard);
@@ -346,7 +430,8 @@ class Play extends Phaser.Scene {
             if (newCombinedCard.selected == false && isSplitting == false) {
             selectedCounter +=1;
             newCombinedCard.selected = true;
-            newCombinedCard.x = game.config.width-127;
+            if (cardPosition == 0) {newCombinedCard.x = game.config.width-127;};
+            if (cardPosition == 1) {newCombinedCard.x = game.config.width+897;};
             newCombinedCard.cardText.setPosition(newCombinedCard.x-40, newCombinedCard.y);
             selectedCardList.push(newCombinedCard);
             this.handNum = handList.indexOf(newCombinedCard);

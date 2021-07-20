@@ -21,8 +21,10 @@ let borderPadding = borderUISize/3;
 
 //initialize variable for player
 let player;
+//initialize variable for camera
+let camera;
 // initialize variable for Deck array and hand stuff
-let cardDeck, deckText, handSize, handList;
+let cardDeck, deckText, handSize, handList, cardPosition;
 let card1, card2, card3, card4, card5;
 
 //initialize variables for split card  and its functions
