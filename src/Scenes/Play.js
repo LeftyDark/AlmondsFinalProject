@@ -119,6 +119,7 @@ class Play extends Phaser.Scene {
         //this.drawCard(cardDeck)
 
         // Spawn Player, Enemy, and Cards
+        this.enemyGroup = this.add.group();
 
         // Assign key values here
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -286,9 +287,10 @@ class Play extends Phaser.Scene {
         if (game.settings.enemyspawncommand) {
             var enemyX = Phaser.Math.Between(30,1000); // game.config.width - 50
             var enemyY = Phaser.Math.Between(0,500); // game.config.height - 350
-            this.enemy = new Enemy(this, enemyX, enemyY, 'enemy');
-            this.physics.add.collider(this.enemy, this.ground);
-            this.physics.add.collider(this.enemy, this.platform);
+            let enemysprite = new Enemy(this, enemyX, enemyY, 'enemy');
+            this.enemyGroup.add(enemysprite);
+            this.physics.add.collider(this.enemyGroup, this.ground);
+            this.physics.add.collider(this.enemyGroup, this.platform);
             game.settings = {
                 enemyspawncommand: false
             };

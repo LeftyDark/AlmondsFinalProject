@@ -6,6 +6,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this, 0);
         //States the player can be in
+        this.body.gravity.y = 1000;
         
         // add sfx here this.sfx<name> = scene.sound.add('sfx_<soundname>');
         this.sfxESpawn = scene.sound.add('appear');
