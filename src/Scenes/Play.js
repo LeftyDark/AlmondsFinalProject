@@ -5,12 +5,11 @@ class Play extends Phaser.Scene {
     init() {}
     preload() {
         this.load.image('card', './assets/smaller_temp_card.png');
-        this.load.image('ground','./assets/placeholder_ground.png');
         this.load.image('player', './assets/idle.png');
-        this.load.image('platform', './assets/placeholder_platform.png');
-        this.load.image('wall', './assets/placeholder_wall.png');
-        this.load.image('smallplat', './assets/mini_platform.png');
-        this.load.image('miniwall', './assets/mini_wall.png');
+        this.load.image('platform', './assets/platform.jpg');
+        this.load.image('wall', './assets/wall.jpg');
+        this.load.image('smallplat', './assets/small_plat.jpg');
+        this.load.image('finalground', './assets/thefloor top1.png');
         this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
         this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
         this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 16});
@@ -30,8 +29,8 @@ class Play extends Phaser.Scene {
 
         //creating ground
         this.ground = this.add.group();
-        for( let i = 0; i < game.config.width+1500; i += 20) {
-            let groundTile = this.physics.add.sprite(i, game.config.height - 20, 'ground').setOrigin(0);
+        for( let i = 0; i < game.config.width+1500; i += 16) {
+            let groundTile = this.physics.add.sprite(i, game.config.height - 16, 'finalground').setOrigin(0);
             groundTile.body.immovable = true;
             groundTile.body.allowGravity = false;
             this.ground.add(groundTile);
