@@ -31,7 +31,7 @@ class Card extends Phaser.Physics.Arcade.Sprite {
     reset() {}
 
     runSingleType (type) {
-        this.appear.play();
+        //this.appear.play();
         //The function that is use to run one single card, or one part of a combined card
         if (type == 'move1L') {
             //place move function here running to move 1L
@@ -83,7 +83,7 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         }
     }
     runCombinedType() {
-        this.appear.play();
+        //this.appear.play();
         if (this.move < 0) {
             let runLeft = Math.abs(this.move)
             for (let i = 0; i < runLeft; i++) {player.left();}

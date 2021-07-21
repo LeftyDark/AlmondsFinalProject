@@ -39,7 +39,7 @@ class Play extends Phaser.Scene {
         }
         //creating a platform
         this.platform = this.add.group();
-        let plat = this.physics.add.sprite(game.config.width-1070, game.config.height-300, 'platform').setOrigin(0);
+        let plat = this.physics.add.sprite(game.config.width-1100, game.config.height-300, 'platform').setOrigin(0);
         plat.body.immovable = true;
         plat.body.allowGravity = false;
         this.plat2 = this.physics.add.sprite(game.config.width-100, game.config.height-275, 'platform').setOrigin(0);
@@ -66,7 +66,7 @@ class Play extends Phaser.Scene {
         this.wall2.body.immovable = true;
         this.wall2.body.allowGravity = false;
         this.wall.add(this.wall2);
-        this.wall3 = this.physics.add.sprite(game.config.width-350, game.config.height-400, 'wall').setOrigin(0);
+        this.wall3 = this.physics.add.sprite(game.config.width-400, game.config.height-450, 'wall').setOrigin(0);
         this.wall3.body.immovable = true;
         this.wall3.body.allowGravity = false;
         this.wall.add(this.wall3);
@@ -229,11 +229,12 @@ class Play extends Phaser.Scene {
         //Once 2 cards have been selected, runs then combines those two cards. Keeps track of what positions in the hands open up so cards 
         //should spawn in the same places the used cards were
             selectedCounter = 0;
-            console.log(selectedCardList);
             if ((selectedCardList[0].charge == 'positive' && selectedCardList[1].charge == 'positive') || (selectedCardList[0].charge == 'negative' && selectedCardList[1].charge == 'negative')) {
                 console.log('same charges do not combine');
+                this.sound.play('break');
             }
-            else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width-5000, game.config.height-550);}
+            else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width-5000, game.config.height-550);
+            this.sound.play('appear')}
             switch (selectedCardList[0].handPosition) {
                 case 1:
                     card1 = false;
@@ -329,15 +330,12 @@ class Play extends Phaser.Scene {
         // Execute all comands on card
         // Repeat until Player reaches Goal, Falls off a cliff, or collides with an Enemy
         if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
-            this.sound.play('appear');
             player.jump();
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
-            this.sound.play('appear');
             player.right();
         }
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-            this.sound.play('appear');
             player.left();
         }
         
@@ -475,10 +473,8 @@ class Play extends Phaser.Scene {
             if (type == 'split') {newCombinedCard.split +=1}
         }
         cardDeck.push(newCombinedCard);
-        console.log(newCombinedCard.combinedTypeList, newCombinedCard.move, newCombinedCard.jump, newCombinedCard.enemy, newCombinedCard.attack, newCombinedCard.split);
         newCombinedCard.cardText = this.add.text(0,0, `charge is \n ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
         newCombinedCard.cardText.setPosition(newCombinedCard.x-50, newCombinedCard.y);
-        console.log(newCombinedCard.x, newCombinedCard.y);
         return newCombinedCard;
     }
     playCard(card) {
@@ -489,19 +485,18 @@ class Play extends Phaser.Scene {
     drawCard(deck) {
         //selects a random card out of the card deck to be drawn. If no card can be drawn, causes a game over (at this moment, just in the console).
         if (cardDeck.length == 0) {this.add.text(game.config.width-550, game.config.height-200,
-            'You Lose...');}
+            'You Lose...');
+        this.add.text(game.config.width+474, game.config.height-200, 'You Lose...')}
         else {
         let drawnCardNum = Math.floor(Math.random() * deck.length);
         let drawnCard = deck[drawnCardNum];
-        handList.push(drawnCard)
-        console.log( deck[drawnCardNum]);
+        handList.push(drawnCard);
         if (card1 == false) {
             drawnCard.x = game.config.width-950;
             if (drawnCard.combined == false)
             {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
             else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
-            console.log(drawnCard.x);
             drawnCard.handPosition = 1;
             card1 = true;
             deck.splice(drawnCardNum, 1);
@@ -513,7 +508,6 @@ class Play extends Phaser.Scene {
             {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
             else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
-            console.log(drawnCard.x);
             drawnCard.handPosition = 2;
             card2 = true;
             deck.splice(drawnCardNum, 1);
@@ -525,7 +519,6 @@ class Play extends Phaser.Scene {
             {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
             else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
-            console.log(drawnCard.x);
             drawnCard.handPosition = 3;
             card3 = true;
             deck.splice(drawnCardNum, 1);   
@@ -537,7 +530,6 @@ class Play extends Phaser.Scene {
             {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
             else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
-            console.log(drawnCard.x);
             drawnCard.handPosition = 4;
             card4 = true;
             deck.splice(drawnCardNum, 1); 
@@ -549,7 +541,6 @@ class Play extends Phaser.Scene {
             {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
             else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
-            console.log(drawnCard.x);
             drawnCard.handPosition = 5;
             card5 = true;
             deck.splice(drawnCardNum, 1);  
@@ -575,7 +566,6 @@ class Play extends Phaser.Scene {
         this.cardCreateSingle('negative', 'enemy', game.config.width-5000, game.config.height-550);
         this.cardCreateSingle('negative', 'attack', game.config.width-5000, game.config.height-550);
         this.cardCreateSingle('negative', 'split', game.config.width-5000, game.config.height-550);
-        console.log(cardDeck.length);
     }
     updateHand() {
         //This functions updates the player's hand to make sure it always has five cards. 
@@ -631,7 +621,6 @@ class Play extends Phaser.Scene {
         if (cardSelected == true) {
             isSplitting = false;
             cardSelected = false;
-            console.log(selectedCard);
             if (selectedCard.combined == false) {
                 switch (selectedCard.handPosition) {
                     case 1:
@@ -694,7 +683,6 @@ class Play extends Phaser.Scene {
                 this.handNum = handList.indexOf(selectedCard);
                 handList.splice(this.handNum, 1);
                 let lastAddedType = selectedCard.combinedTypeList.pop();
-                console.log(lastAddedType, selectedCard.combinedTypeList);
                 this.cardCreateSingle(selectedCard.charge, lastAddedType, game.config.width-5000, game.config.height-550);
                 if (lastAddedType == 'move1L') {selectedCard.move +=1}
                 if (lastAddedType == 'move3L') {selectedCard.move +=3}
@@ -707,7 +695,6 @@ class Play extends Phaser.Scene {
                 selectedCard.cardText.destroy();
                 selectedCard.x = game.config.width-5000;
                 cardDeck.push(selectedCard);
-                console.log(cardDeck);
                 handSize -=1;
                 this.updateHand();
             }
