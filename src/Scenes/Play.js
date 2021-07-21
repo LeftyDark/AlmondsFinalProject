@@ -417,7 +417,7 @@ class Play extends Phaser.Scene {
             newCard = new Card(this, x, y, 'neg_card', 0, cardType, cardCharge, false).setInteractive();}
         if (cardCharge == 'neutral') {
             newCard = new Card(this, x, y, 'neu_card', 0, cardType, cardCharge, false).setInteractive();}
-        this.cardText = this.add.text(0,0, `charge is \n ${newCard.charge} \n type is \n ${newCard.cardType}`);
+        this.cardText = this.add.text(0,0, `type is \n ${newCard.cardType}`);
         this.cardText.setPosition(newCard.x-40, newCard.y-50);
         newCard.body.allowGravity = false;
         newCard.on('pointerdown', function (pointer) {
@@ -494,7 +494,10 @@ class Play extends Phaser.Scene {
             if (type == 'split') {newCombinedCard.split +=1}
         }
         cardDeck.push(newCombinedCard);
-        newCombinedCard.cardText = this.add.text(0,0, `charge is \n ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
+        if (newCombinedCard.move >= 0) {
+        newCombinedCard.cardText = this.add.text(0,0, `types are: \n Move ${newCombinedCard.move}R\n Jump x${newCombinedCard.jump} \n Enemy x${newCombinedCard.enemy} \n Attack x${newCombinedCard.attack} \n Split x${newCombinedCard.split}`);
+        }
+        else {newCombinedCard.cardText = this.add.text(0,0, `types are: \n Move ${Math.abs(newCombinedCard.move)}L\n Jump x${newCombinedCard.jump} \n Enemy x${newCombinedCard.enemy} \n Attack x${newCombinedCard.attack} \n Split x${newCombinedCard.split}`);}
         newCombinedCard.cardText.setPosition(newCombinedCard.x-50, newCombinedCard.y-50);
         return newCombinedCard;
     }
@@ -515,8 +518,13 @@ class Play extends Phaser.Scene {
         if (card1 == false) {
             drawnCard.x = game.config.width-950;
             if (drawnCard.combined == false)
-            {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
-            else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
+            {drawnCard.cardText = this.add.text(0,0, `type is \n ${drawnCard.cardType}`)}
+            else {if (drawnCard.move >= 0) {
+                drawnCard.cardText = this.add.text(0,0, `types are: \n Move ${drawnCard.move}R\n Jump x${drawnCard.jump} \n Enemy x${drawnCard.enemy} \n Attack x${drawnCard.attack} \n Split x${drawnCard.split}`)}
+                else {
+                    drawnCard.cardText = this.add.text(0,0, `types are: \n Move ${Math.abs(drawnCard.move)}L\n Jump x${drawnCard.jump} \n Enemy x${drawnCard.enemy} \n Attack x${drawnCard.attack} \n Split x${drawnCard.split}`)
+                }
+            };
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y-50);
             drawnCard.handPosition = 1;
             card1 = true;
@@ -526,8 +534,13 @@ class Play extends Phaser.Scene {
         if (card2 == false) {
             drawnCard.x = game.config.width-800;
             if (drawnCard.combined == false)
-            {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
-            else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
+            {drawnCard.cardText = this.add.text(0,0, `type is \n ${drawnCard.cardType}`)}
+            else {if (drawnCard.move >= 0) {
+                drawnCard.cardText = this.add.text(0,0, `types are: \n Move ${drawnCard.move}R\n Jump x${drawnCard.jump} \n Enemy x${drawnCard.enemy} \n Attack x${drawnCard.attack} \n Split x${drawnCard.split}`)}
+                else {
+                    drawnCard.cardText = this.add.text(0,0, `types are: \n Move ${Math.abs(drawnCard.move)}L\n Jump x${drawnCard.jump} \n Enemy x${drawnCard.enemy} \n Attack x${drawnCard.attack} \n Split x${drawnCard.split}`)
+                }
+            };
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
             drawnCard.handPosition = 2;
             card2 = true;
@@ -537,8 +550,13 @@ class Play extends Phaser.Scene {
         if (card3 == false) {
             drawnCard.x = game.config.width-650;
             if (drawnCard.combined == false)
-            {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
-            else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
+            {drawnCard.cardText = this.add.text(0,0, `type is \n ${drawnCard.cardType}`)}
+            else {if (drawnCard.move >= 0) {
+                drawnCard.cardText = this.add.text(0,0, `types are: \n Move ${drawnCard.move}R\n Jump x${drawnCard.jump} \n Enemy x${drawnCard.enemy} \n Attack x${drawnCard.attack} \n Split x${drawnCard.split}`)}
+                else {
+                    drawnCard.cardText = this.add.text(0,0, `types are: \n Move ${Math.abs(drawnCard.move)}L\n Jump x${drawnCard.jump} \n Enemy x${drawnCard.enemy} \n Attack x${drawnCard.attack} \n Split x${drawnCard.split}`)
+                }
+            };
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y-50);
             drawnCard.handPosition = 3;
             card3 = true;
@@ -548,8 +566,13 @@ class Play extends Phaser.Scene {
         if (card4 == false) {
             drawnCard.x = game.config.width-500;
             if (drawnCard.combined == false)
-            {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
-            else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
+            {drawnCard.cardText = this.add.text(0,0, `type is \n ${drawnCard.cardType}`)}
+            else {if (drawnCard.move >= 0) {
+                drawnCard.cardText = this.add.text(0,0, `types are: \n Move ${drawnCard.move}R\n Jump x${drawnCard.jump} \n Enemy x${drawnCard.enemy} \n Attack x${drawnCard.attack} \n Split x${drawnCard.split}`)}
+                else {
+                    drawnCard.cardText = this.add.text(0,0, `types are: \n Move ${Math.abs(drawnCard.move)}L\n Jump x${drawnCard.jump} \n Enemy x${drawnCard.enemy} \n Attack x${drawnCard.attack} \n Split x${drawnCard.split}`)
+                }
+            };
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y-50);
             drawnCard.handPosition = 4;
             card4 = true;
@@ -559,8 +582,14 @@ class Play extends Phaser.Scene {
         if (card5 == false) {
             drawnCard.x = game.config.width-350;
             if (drawnCard.combined == false)
-            {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
-            else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
+            {drawnCard.cardText = this.add.text(0,0, `type is \n ${drawnCard.cardType}`)}
+            else {
+                if (drawnCard.move >= 0) {
+                drawnCard.cardText = this.add.text(0,0, `types are: \n Move ${drawnCard.move}R\n Jump x${drawnCard.jump} \n Enemy x${drawnCard.enemy} \n Attack x${drawnCard.attack} \n Split x${drawnCard.split}`)}
+                else {
+                    drawnCard.cardText = this.add.text(0,0, `types are: \n Move ${Math.abs(drawnCard.move)}L\n Jump x${drawnCard.jump} \n Enemy x${drawnCard.enemy} \n Attack x${drawnCard.attack} \n Split x${drawnCard.split}`)
+                }
+            };
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y-50);
             drawnCard.handPosition = 5;
             card5 = true;
