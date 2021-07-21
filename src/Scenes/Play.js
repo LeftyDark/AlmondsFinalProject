@@ -5,11 +5,15 @@ class Play extends Phaser.Scene {
     init() {}
     preload() {
         this.load.image('card', './assets/smaller_temp_card.png');
+        this.load.image('pos_card', './assets/cardplus.png');
+        this.load.image('neg_card', './assets/cardminus.png');
+        this.load.image('neu_card', './assets/cardneutral.png');
         this.load.image('player', './assets/idle.png');
         this.load.image('platform', './assets/platform.jpg');
         this.load.image('wall', './assets/wall.jpg');
         this.load.image('smallplat', './assets/small_plat.jpg');
         this.load.image('finalground', './assets/thefloor top1.png');
+        this.load.image('enemy', './assets/birthday girl static.png');
         this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
         this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
         this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 16});
@@ -179,23 +183,23 @@ class Play extends Phaser.Scene {
                 switch (card.handPosition) {
                     case 1:
                         card.x = game.config.width-950;
-                        card.cardText.setPosition(card.x-40, card.y);
+                        card.cardText.setPosition(card.x-40, card.y-50);
                         break;
                     case 2:
                         card.x = game.config.width-800;
-                        card.cardText.setPosition(card.x-40, card.y);
+                        card.cardText.setPosition(card.x-40, card.y-50);
                         break;
                     case 3:
                         card.x = game.config.width-650;
-                        card.cardText.setPosition(card.x-40, card.y);
+                        card.cardText.setPosition(card.x-40, card.y-50);
                         break;
                     case 4:
                         card.x = game.config.width-500;
-                        card.cardText.setPosition(card.x-40, card.y);
+                        card.cardText.setPosition(card.x-40, card.y-50);
                         break;
                     case 5:
                         card.x = game.config.width-350;
-                        card.cardText.setPosition(card.x-40, card.y);
+                        card.cardText.setPosition(card.x-40, card.y-50);
                         break;
                     default:
                         console.log('where is this card lmao')
@@ -210,23 +214,23 @@ class Play extends Phaser.Scene {
                 switch (card.handPosition) {
                     case 1:
                         card.x = game.config.width+74;
-                        card.cardText.setPosition(card.x-40, card.y);
+                        card.cardText.setPosition(card.x-40, card.y-50);
                         break;
                     case 2:
                         card.x = game.config.width+224;
-                        card.cardText.setPosition(card.x-40, card.y);
+                        card.cardText.setPosition(card.x-40, card.y-50);
                         break;
                     case 3:
                         card.x = game.config.width+374;
-                        card.cardText.setPosition(card.x-40, card.y);
+                        card.cardText.setPosition(card.x-40, card.y-50);
                         break;
                     case 4:
                         card.x = game.config.width+524;
-                        card.cardText.setPosition(card.x-40, card.y);
+                        card.cardText.setPosition(card.x-40, card.y-50);
                         break;
                     case 5:
                         card.x = game.config.width+674;
-                        card.cardText.setPosition(card.x-40, card.y);
+                        card.cardText.setPosition(card.x-40, card.y-50);
                         break;
                     default:
                         console.log('where is this card lmao')
@@ -407,9 +411,14 @@ class Play extends Phaser.Scene {
         if (type=='none') {cardType = this.determineCardType();}
         else {cardType=type}
         let newCard;
-        newCard = new Card(this, x, y, 'card', 0, cardType, cardCharge, false).setInteractive();
+        if (cardCharge == 'positive') {
+            newCard = new Card(this, x, y, 'pos_card', 0, cardType, cardCharge, false).setInteractive();}
+        if (cardCharge == 'negative') {
+            newCard = new Card(this, x, y, 'neg_card', 0, cardType, cardCharge, false).setInteractive();}
+        if (cardCharge == 'neutral') {
+            newCard = new Card(this, x, y, 'neu_card', 0, cardType, cardCharge, false).setInteractive();}
         this.cardText = this.add.text(0,0, `charge is \n ${newCard.charge} \n type is \n ${newCard.cardType}`);
-        this.cardText.setPosition(newCard.x-40, newCard.y);
+        this.cardText.setPosition(newCard.x-40, newCard.y-50);
         newCard.body.allowGravity = false;
         newCard.on('pointerdown', function (pointer) {
             if (newCard.selected == false && isSplitting == false) {
@@ -417,7 +426,7 @@ class Play extends Phaser.Scene {
             newCard.selected = true;
             if (cardPosition == 0) {newCard.x = game.config.width-127;};
             if (cardPosition == 1) {newCard.x = game.config.width+897;};
-            this.cardText.setPosition(newCard.x-40, newCard.y);
+            this.cardText.setPosition(newCard.x-40, newCard.y-50);
             selectedCardList.push(newCard);
             this.handNum = handList.indexOf(newCard);
             handList.splice(this.handNum, 1);
@@ -455,7 +464,9 @@ class Play extends Phaser.Scene {
             newCharge = 'negative'
         }
         let newCombinedCard;
-        newCombinedCard = new Card(this, x,y, 'card', 0, card1.cardType, newCharge, true).setInteractive();
+        if (newCharge == 'positive') {newCombinedCard = new Card(this, x,y, 'pos_card', 0, card1.cardType, newCharge, true).setInteractive();}
+        if (newCharge == 'negative') {newCombinedCard = new Card(this, x,y, 'neg_card', 0, card1.cardType, newCharge, true).setInteractive();}
+        if (newCharge == 'neutral') {newCombinedCard = new Card(this, x,y, 'neu_card', 0, card1.cardType, newCharge, true).setInteractive();}
         newCombinedCard.body.allowGravity = false;
         newCombinedCard.on('pointerdown', function (pointer) {
             if (newCombinedCard.selected == false && isSplitting == false) {
@@ -463,7 +474,7 @@ class Play extends Phaser.Scene {
             newCombinedCard.selected = true;
             if (cardPosition == 0) {newCombinedCard.x = game.config.width-127;};
             if (cardPosition == 1) {newCombinedCard.x = game.config.width+897;};
-            newCombinedCard.cardText.setPosition(newCombinedCard.x-40, newCombinedCard.y);
+            newCombinedCard.cardText.setPosition(newCombinedCard.x-40, newCombinedCard.y-50);
             selectedCardList.push(newCombinedCard);
             this.handNum = handList.indexOf(newCombinedCard);
             handList.splice(this.handNum, 1);
@@ -484,7 +495,7 @@ class Play extends Phaser.Scene {
         }
         cardDeck.push(newCombinedCard);
         newCombinedCard.cardText = this.add.text(0,0, `charge is \n ${newCombinedCard.charge} \n types are \n ${newCombinedCard.combinedTypeList}`);
-        newCombinedCard.cardText.setPosition(newCombinedCard.x-50, newCombinedCard.y);
+        newCombinedCard.cardText.setPosition(newCombinedCard.x-50, newCombinedCard.y-50);
         return newCombinedCard;
     }
     playCard(card) {
@@ -506,7 +517,7 @@ class Play extends Phaser.Scene {
             if (drawnCard.combined == false)
             {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
             else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
-            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y-50);
             drawnCard.handPosition = 1;
             card1 = true;
             deck.splice(drawnCardNum, 1);
@@ -528,7 +539,7 @@ class Play extends Phaser.Scene {
             if (drawnCard.combined == false)
             {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
             else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
-            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y-50);
             drawnCard.handPosition = 3;
             card3 = true;
             deck.splice(drawnCardNum, 1);   
@@ -539,7 +550,7 @@ class Play extends Phaser.Scene {
             if (drawnCard.combined == false)
             {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
             else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
-            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y-50);
             drawnCard.handPosition = 4;
             card4 = true;
             deck.splice(drawnCardNum, 1); 
@@ -550,7 +561,7 @@ class Play extends Phaser.Scene {
             if (drawnCard.combined == false)
             {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n type is \n ${drawnCard.cardType}`)}
             else {drawnCard.cardText = this.add.text(0,0, `charge is \n ${drawnCard.charge} \n types are \n ${drawnCard.combinedTypeList}`)};
-            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y);
+            drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y-50);
             drawnCard.handPosition = 5;
             card5 = true;
             deck.splice(drawnCardNum, 1);  
