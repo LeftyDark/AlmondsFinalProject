@@ -25,8 +25,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     jump() {
         this.body.velocity.y -= 2000;
         if (this.facing == 'right')
-        {this.anims.play('playerJumpR', 8, true);}
-        else {this.anims.play('playerJumpL', 8, true)}
+        {this.anims.play('playerJumpR', 8, true);
+        setTimeout(() => {player.setTexture('player');}, 900);}
+        else {this.anims.play('playerJumpL', 8, true);
+        setTimeout(() => {player.setTexture('player');}, 900);}
     }
     left() {
         this.body.velocity.x -= 100;
@@ -34,7 +36,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.facing = 'left';
         }
         this.anims.play('playerDashL', 8, true);
-        setTimeout(() => {  this.body.velocity.x = 0 }, 1000);
+        setTimeout(() => {this.body.velocity.x = 0; 
+            player.setTexture('player');}, 1000);
     }
     right() {
         this.body.velocity.x += 100;
@@ -42,6 +45,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.facing = 'right';
         }
         this.anims.play('playerDashR', 8, true);
-        setTimeout(() => {  this.body.velocity.x = 0 }, 1000);
+        setTimeout(() => {this.body.velocity.x = 0; 
+            player.setTexture('player');}, 1000);
     }
 }

@@ -6,17 +6,16 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.image('card', './assets/smaller_temp_card.png');
         this.load.image('ground','./assets/placeholder_ground.png');
-        this.load.image('player', './assets/noun_runningman_10.png');
+        this.load.image('player', './assets/idle.png');
         this.load.image('platform', './assets/placeholder_platform.png');
         this.load.image('wall', './assets/placeholder_wall.png');
         this.load.image('smallplat', './assets/mini_platform.png');
         this.load.image('miniwall', './assets/mini_wall.png');
-        this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 7});
-        this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 7});
-        this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 14});
-        this.load.spritesheet('jumpLsprite', './assets/jumpL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 14});
+        this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
+        this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
+        this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 16});
+        this.load.spritesheet('jumpLsprite', './assets/jumpL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 16});
         this.load.image('goal', './assets/Sprites/Star.png');
-        //running person by Kathleen Black from the Noun Project
     }
     create() {
         game.settings = {
@@ -71,8 +70,7 @@ class Play extends Phaser.Scene {
         this.wall3.body.allowGravity = false;
         this.wall.add(this.wall3);
         //creating player
-        player = new Player(this, game.config.width-500, game.config.height-100, 'dashRsprite');
-        //player.setCollideWorldBounds(true);
+        player = new Player(this, game.config.width-500, game.config.height-100, 'player');
         this.physics.add.collider(player, this.ground);
         this.physics.add.collider(player, this.platform);
         this.physics.add.collider(player, this.wall);
@@ -85,26 +83,26 @@ class Play extends Phaser.Scene {
         //creating animations
         this.dashRAni = this.anims.create({
             key: 'playerDashR',
-            frames: this.anims.generateFrameNumbers('dashRsprite', { start: 0, end: 7, first: 0}),
-            frameRate: 8,
+            frames: this.anims.generateFrameNumbers('dashRsprite', { start: 0, end: 5, first: 0}),
+            frameRate: 7,
             repeat: 0
         });
         this.dashLAni = this.anims.create({
             key: 'playerDashL',
-            frames: this.anims.generateFrameNumbers('dashLsprite', { start: 0, end: 7, first: 0}),
-            frameRate: 8,
+            frames: this.anims.generateFrameNumbers('dashLsprite', { start: 0, end: 5, first: 0}),
+            frameRate: 7,
             repeat: 0
         });
         this.jumpLAni = this.anims.create({
             key: 'playerJumpL',
-            frames: this.anims.generateFrameNumbers('jumpLsprite', { start: 0, end: 14, first: 0}),
-            frameRate: 8,
+            frames: this.anims.generateFrameNumbers('jumpLsprite', { start: 0, end: 16, first: 0}),
+            frameRate: 20,
             repeat: 0
         });
         this.jumpRAni = this.anims.create({
             key: 'playerJumpR',
-            frames: this.anims.generateFrameNumbers('jumpRsprite', { start: 0, end: 14, first: 0}),
-            frameRate: 8,
+            frames: this.anims.generateFrameNumbers('jumpRsprite', { start: 0, end: 16, first: 0}),
+            frameRate: 20,
             repeat: 0
         });
         
