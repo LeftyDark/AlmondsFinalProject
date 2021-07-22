@@ -26,6 +26,13 @@ class Play extends Phaser.Scene {
             enemyexterminatecommand: false
         };
 
+        //Configure text for in-game
+        textConfig = {
+            backgroundColor: '#487CA5'
+        }
+        splitTextConfig = {
+            backgroundColor: '#E50707'
+        }
         this.cameras.main.setBackgroundColor('#CCC');
 
         //game.settings.enemyspawned = false;
@@ -124,25 +131,25 @@ class Play extends Phaser.Scene {
         cardPosition = 0;
         selectedCardList = [];
         selectedCounter = 0;
-        this.add.text(game.config.width/4, game.config.height/2-50, 'Click on cards to combine them and use their actions! \n 2 Positive and 2 Negative cards do not combine. \n Or move left and right with the arrow keys, and jump with SPACEBAR! \n Currently only the move and jump cards work. \n The split card partially works, type the number of a card in your hand \n to split it if it is not combined.');
-        this.add.text(game.config.width-670, game.config.height-680, 'Hand');
-        this.add.text(game.config.width-220, game.config.height-680, '1st Selected Card');
-        this.add.text(game.config.width+354, game.config.height-680, 'Hand');
-        this.add.text(game.config.width+804, game.config.height-680, '1st Selected Card');
-        this.add.text(game.config.width-950, game.config.height-450, '1');
-        this.add.text(game.config.width-800, game.config.height-450, '2');
-        this.add.text(game.config.width-650, game.config.height-450, '3');
-        this.add.text(game.config.width-500, game.config.height-450, '4');
-        this.add.text(game.config.width-350, game.config.height-450, '5');
-        this.add.text(game.config.width+74, game.config.height-450, '1');
-        this.add.text(game.config.width+224, game.config.height-450, '2');
-        this.add.text(game.config.width+374, game.config.height-450, '3');
-        this.add.text(game.config.width+524, game.config.height-450, '4');
-        this.add.text(game.config.width+674, game.config.height-450, '5');
-        splitText = this.add.text(game.config.width-600, game.config.height-680, 'Not splitting.');
+        //this.add.text(game.config.width/4, game.config.height/2-50, 'Click on cards to combine them and use their actions! \n 2 Positive and 2 Negative cards do not combine. \n Or move left and right with the arrow keys, and jump with SPACEBAR! \n Currently only the move and jump cards work. \n The split card partially works, type the number of a card in your hand \n to split it if it is not combined.');
+        this.add.text(game.config.width-670, game.config.height-680, 'Hand', textConfig);
+        this.add.text(game.config.width-220, game.config.height-680, '1st Selected Card', textConfig);
+        this.add.text(game.config.width+354, game.config.height-680, 'Hand', textConfig);
+        this.add.text(game.config.width+804, game.config.height-680, '1st Selected Card', textConfig);
+        this.add.text(game.config.width-950, game.config.height-480, '1', textConfig);
+        this.add.text(game.config.width-800, game.config.height-480, '2', textConfig);
+        this.add.text(game.config.width-650, game.config.height-480, '3', textConfig);
+        this.add.text(game.config.width-500, game.config.height-480, '4', textConfig);
+        this.add.text(game.config.width-350, game.config.height-480, '5', textConfig);
+        this.add.text(game.config.width+74, game.config.height-480, '1', textConfig);
+        this.add.text(game.config.width+224, game.config.height-480, '2', textConfig);
+        this.add.text(game.config.width+374, game.config.height-480, '3', textConfig);
+        this.add.text(game.config.width+524, game.config.height-480, '4', textConfig);
+        this.add.text(game.config.width+674, game.config.height-480, '5', textConfig);
+        splitText = this.add.text(game.config.width-600, game.config.height-680, 'Not splitting.', textConfig);
         this.createDeck();
         this.updateHand();
-        deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`);
+        deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);
         //let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-550);
         //let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-550);
         //let firstCombine = this.cardCombine(firstCard, secondCard);
@@ -313,7 +320,7 @@ class Play extends Phaser.Scene {
             selectedCardList[1].destroy();
             selectedCardList.splice(0, 2);
             deckText.destroy();
-            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`);
+            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);
         }
         // Player has an option to choose 2 cards to play
         // Check is card choices are valid
@@ -642,8 +649,8 @@ class Play extends Phaser.Scene {
         //This functions splits a card in the hand and only runs when isSplitting is set to be true by a split card.
         let selectedCard;
         splitText.destroy();
-        if (cardPosition==0) {splitText = this.add.text(game.config.width-600, game.config.height-680, 'Splitting, type # of card to split it.');}
-        if (cardPosition==1) {splitText = this.add.text(game.config.width+424, game.config.height-680, 'Splitting, type # of card to split it.');}
+        if (cardPosition==0) {splitText = this.add.text(game.config.width-600, game.config.height-680, 'Splitting, type # of card to split it.', splitTextConfig);}
+        if (cardPosition==1) {splitText = this.add.text(game.config.width+424, game.config.height-680, 'Splitting, type # of card to split it.', splitTextConfig);}
         //First, select a card to split by typing the number of the card of that position in your hand
         if (Phaser.Input.Keyboard.JustDown(key1) && cardSelected == false) {
             for (let card of handList) {
@@ -767,9 +774,9 @@ class Play extends Phaser.Scene {
                 this.updateHand();
             }
             deckText.destroy();
-            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`);
+            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);
             splitText.destroy();
-            splitText = this.add.text(game.config.width-600, game.config.height-680, 'Not splitting');
+            splitText = this.add.text(game.config.width-600, game.config.height-680, 'Not splitting', textConfig);
             splitNum-=1;
             if (splitNum > 0) {isSplitting = true;}
         }

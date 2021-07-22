@@ -26,7 +26,8 @@ let camera;
 // initialize variable for Deck array and hand stuff
 let cardDeck, deckText, handSize, handList, cardPosition;
 let card1, card2, card3, card4, card5;
-
+//initalize text stuff
+let textConfig, splitTextConfig;
 //initialize variables for split card  and its functions
 let isSplitting, splitNum, cardSelected, splitText;
 // intialize Music variable
