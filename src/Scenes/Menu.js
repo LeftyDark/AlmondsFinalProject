@@ -11,7 +11,7 @@ class Menu extends Phaser.Scene {
         this.load.audio('appear', './assets/SoundEffects/placeholder.wav');
         this.load.audio('flip', './assets/SoundEffects/cardflip.wav');
         this.load.audio('break', './assets/SoundEffects/202093__spookymodem__bottle-shattering.wav')
-        this.load.audio('BGMplay', './assets/BGM/tanukichi_loop.wav'); // DOVA-Syndrome たぬきちの冒険
+        this.load.audio('BGMplay', './assets/BGM/Telos.mp3'); 
     }
     create() {
         this.cameras.main.setBackgroundColor('#5cb595');

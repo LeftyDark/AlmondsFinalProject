@@ -12,7 +12,7 @@ class Credits extends Phaser.Scene {
         this.add.text(game.config.width-700, game.config.height-490, 'More programming and sound by Masateru Nakajima');
         this.add.text(game.config.width-700, game.config.height-460, 'Shattering sound from \nhttps://freesound.org/people/spookymodem/sounds/202093/')
         this.add.text(game.config.width-700, game.config.height-400, 'Pop sound effect from \nhttps://soundeffect-lab.info/')
-        this.add.text(game.config.width-700, game.config.height-340, 'BGM (Tanukichi No Bouken) from \nhttps://dova-s.jp/')
+        this.add.text(game.config.width-700, game.config.height-340, 'BGM (Telos by exurbia) from \nhttps://soundcloud.com/exurbia-1/telos')
         
         this.menuText = this.add.text(game.config.width-700, game.config.height/2+250, 'Press Spacebar to return to the menu').setOrigin(0);
     }
