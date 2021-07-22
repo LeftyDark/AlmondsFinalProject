@@ -588,6 +588,7 @@ class Play extends Phaser.Scene {
         setTimeout(() => {this.scene.restart();}, 5000);
     }
         else {
+        if (gameOver == false) {
         let drawnCardNum = Math.floor(Math.random() * deck.length);
         let drawnCard = deck[drawnCardNum];
         handList.push(drawnCard);
@@ -672,7 +673,9 @@ class Play extends Phaser.Scene {
             deck.splice(drawnCardNum, 1);  
             return 'card made in hand position 5'     
         }
-        return drawnCard}}, 1700)
+        return drawnCard}
+        }
+    }, 1700)
     }
     createDeck() {
         //This functions creates the default deck of cards for the start of the game.
