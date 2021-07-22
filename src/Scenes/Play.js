@@ -209,7 +209,7 @@ class Play extends Phaser.Scene {
             deckText.x = game.config.width-950;
             combineText.x = game.config.width-950;
             destroyText.x = game.config.width-950;
-            for (let card of handList) {
+            if (gameOver == false) {for (let card of handList) {
                 switch (card.handPosition) {
                     case 1:
                         card.x = game.config.width-950;
@@ -235,14 +235,14 @@ class Play extends Phaser.Scene {
                         console.log('where is this card lmao')
                         break;
                 }
-            }
+            }}
         }
         if (cardPosition == 1) {
             splitText.x = game.config.width+424;
             deckText.x = game.config.width+74;
             combineText.x = game.config.width+74;
             destroyText.x = game.config.width+74;
-            for (let card of handList) {
+            if (gameOver == false) {for (let card of handList) {
                 switch (card.handPosition) {
                     case 1:
                         card.x = game.config.width+74;
@@ -268,7 +268,7 @@ class Play extends Phaser.Scene {
                         console.log('where is this card lmao')
                         break;
                 }
-            }
+            }}
         }
 
         if (selectedCounter == 2) {
@@ -412,7 +412,7 @@ class Play extends Phaser.Scene {
         
         if(this.collisionCheck(player, this.goal)) {
             this.add.text(game.config.width-550, game.config.height-200,
-                'You Win!');
+                'You Win!', textConfig);
             this.add.text(game.config.width+474, game.config.height-200, 'You Win!');
             gameOver = true;
         }
@@ -672,7 +672,7 @@ class Play extends Phaser.Scene {
             deck.splice(drawnCardNum, 1);  
             return 'card made in hand position 5'     
         }
-        return drawnCard}}, 2000)
+        return drawnCard}}, 1700)
     }
     createDeck() {
         //This functions creates the default deck of cards for the start of the game.
