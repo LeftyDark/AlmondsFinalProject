@@ -188,8 +188,14 @@ class Play extends Phaser.Scene {
         camera = this.cameras.main;
     }
     update() {
+        // Ground Boundary
         if(player.y > game.config.height) {
             player.y = game.config.height - 50;
+            player.body.velocity.y = 0;
+        }
+        // Ceiling Boundary
+        if(player.y < 0) {
+            player.y = 0;
             player.body.velocity.y = 0;
         }
 
