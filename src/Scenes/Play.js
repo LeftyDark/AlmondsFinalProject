@@ -186,6 +186,11 @@ class Play extends Phaser.Scene {
         camera = this.cameras.main;
     }
     update() {
+        if(player.y > game.config.height) {
+            player.y = game.config.height - 50;
+            player.body.velocity.y = 0;
+        }
+
         //Move camera if player moves off the right edge of the screen. Also moves cards to be on the right screen.
         if (player.x >1024 && player.x<2048) {
             camera.centerOnX(1536);
