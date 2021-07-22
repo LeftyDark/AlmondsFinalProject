@@ -11,6 +11,7 @@ class Play extends Phaser.Scene {
         this.load.image('platform', './assets/platform.jpg');
         this.load.image('wall', './assets/wall.jpg');
         this.load.image('smallplat', './assets/small_plat.jpg');
+        this.load.image('medplat', './assets/medplat.jpg');
         this.load.image('finalground', './assets/thefloor full.png');
         this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 48, frameHeight: 51, startFrame: 0, endFrame: 5});
         this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 48, frameHeight: 51, startFrame: 0, endFrame: 5});
@@ -41,7 +42,7 @@ class Play extends Phaser.Scene {
         }
         //creating a platform
         this.platform = this.add.group();
-        let plat = this.physics.add.sprite(game.config.width-1075, game.config.height-300, 'platform').setOrigin(0);
+        let plat = this.physics.add.sprite(game.config.width-750, game.config.height-300, 'medplat').setOrigin(0);
         plat.body.immovable = true;
         plat.body.allowGravity = false;
         this.plat2 = this.physics.add.sprite(game.config.width-100, game.config.height-275, 'platform').setOrigin(0);
@@ -73,7 +74,7 @@ class Play extends Phaser.Scene {
         this.wall3.body.allowGravity = false;
         this.wall.add(this.wall3);
         //creating player
-        player = new Player(this, game.config.width-500, game.config.height-100, 'player');
+        player = new Player(this, game.config.width-900, game.config.height-100, 'player');
         this.physics.add.collider(player, this.ground);
         this.physics.add.collider(player, this.platform);
         this.physics.add.collider(player, this.wall);
@@ -344,11 +345,7 @@ class Play extends Phaser.Scene {
 
         // enemy spawn if card is chosen
         if (game.settings.enemyspawncommand) {
-            if(player.x < 1024) {
-                var enemyX = Phaser.Math.Between(30,1000); // game.config.width - 50
-            } else {
-                var enemyX = Phaser.Math.Between(1054,2024); // game.config.width - 50
-            }
+            var enemyX = this.determineEnemyX();
             var enemyY = Phaser.Math.Between(0,500); // game.config.height - 350
             let enemysprite = new Enemy(this, enemyX, enemyY, 'enemy');
             //this.enemyGroup.add(enemysprite);
@@ -576,7 +573,7 @@ class Play extends Phaser.Scene {
         //selects a random card out of the card deck to be drawn. If no card can be drawn, causes a game over (at this moment, just in the console).
         if (cardDeck.length == 0) {this.add.text(game.config.width-550, game.config.height-200,
             'You Lost because your Deck is empty... \n The game will restart in 5 seconds!', splitTextConfig);
-        this.add.text(game.config.width+474, game.config.height-200, 'You Lost because your Deck is empty... \m The game will restart in 5 seconds!', splitTextConfig)
+        this.add.text(game.config.width+474, game.config.height-200, 'You Lost because your Deck is empty... \n The game will restart in 5 seconds!', splitTextConfig)
         setTimeout(() => {this.scene.restart();}, 5000);
     }
         else {
@@ -847,6 +844,17 @@ class Play extends Phaser.Scene {
             splitNum-=1;
             if (splitNum > 0) {isSplitting = true;}
         }
+    }
+    determineEnemyX() {
+        //This functions decides where the enemy is going to spawn and makes sure it will not spawn on top of the player.
+        let x;
+        if(player.x < 1024) {
+            x = Phaser.Math.Between(30,1000); // game.config.width - 50
+        } else {
+            x = Phaser.Math.Between(1054,2024); // game.config.width - 50
+        }
+        if (player.x -x <=150 && player.x -x >=-150) {this.determineEnemyX();}
+        else {return x}
     }
 }
 
