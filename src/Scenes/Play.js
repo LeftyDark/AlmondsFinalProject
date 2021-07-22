@@ -372,10 +372,13 @@ class Play extends Phaser.Scene {
                 'You Win!');
             this.add.text(game.config.width+474, game.config.height-200, 'You Win!');
         }
-        //if(this.collisionCheck(player, this.enemy)) {
-        //    this.add.text(game.config.width-550, game.config.height-200,
-        //        'You Lose!');
-        //}
+
+        // collision check with enemy
+        for (var i = 0; i < this.enemyArr.length; i++) {
+            if (this.collisionDistCheckByValue(this.enemyArr[i].x, this.enemyArr[i].y, player.x, player.y)) {
+                this.add.text(game.config.width-550, game.config.height-200, 'You Lose!');
+            }
+        }
     }
 
     collisionCheck(first, second) {
@@ -383,6 +386,11 @@ class Play extends Phaser.Scene {
             first.x + first.width > second.x &&
             first.y < second.y + second.height &&
             first.height + first.y > second.y);
+    }
+
+    collisionDistCheckByValue(oneX, oneY, twoX, twoY) {
+        this.ptDist = Math.sqrt((Math.abs(oneX - twoX) ** 2) + (Math.abs(oneY - twoY) ** 2));
+        return (this.ptDist < 100);
     }
 
     determineCardType(type='none') {
