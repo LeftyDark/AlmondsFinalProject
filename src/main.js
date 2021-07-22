@@ -28,6 +28,7 @@ let cardDeck, deckText, handSize, handList, cardPosition;
 let card1, card2, card3, card4, card5;
 //initalize text stuff
 let textConfig, splitTextConfig;
+let press1text, press2text, press3text, press4text, press5text, press1text2, press2text2, press3text2, press4text2, press5text2;
 //initialize variables for split card  and its functions
 let isSplitting, splitNum, cardSelected, splitText;
 // intialize Music variable

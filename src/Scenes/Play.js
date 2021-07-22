@@ -27,13 +27,8 @@ class Play extends Phaser.Scene {
         };
 
         //Configure text for in-game
-        textConfig = {
-            backgroundColor: '#487CA5'
-        }
-        splitTextConfig = {
-            backgroundColor: '#E50707'
-        }
-        this.cameras.main.setBackgroundColor('#CCC');
+        
+        this.cameras.main.setBackgroundColor('#5cb595');
 
         //game.settings.enemyspawned = false;
         //game.settings.enemyspawncommand = false;
@@ -136,17 +131,27 @@ class Play extends Phaser.Scene {
         this.add.text(game.config.width-220, game.config.height-680, '1st Selected Card', textConfig);
         this.add.text(game.config.width+354, game.config.height-680, 'Hand', textConfig);
         this.add.text(game.config.width+804, game.config.height-680, '1st Selected Card', textConfig);
-        this.add.text(game.config.width-950, game.config.height-480, '1', textConfig);
-        this.add.text(game.config.width-800, game.config.height-480, '2', textConfig);
-        this.add.text(game.config.width-650, game.config.height-480, '3', textConfig);
-        this.add.text(game.config.width-500, game.config.height-480, '4', textConfig);
-        this.add.text(game.config.width-350, game.config.height-480, '5', textConfig);
-        this.add.text(game.config.width+74, game.config.height-480, '1', textConfig);
-        this.add.text(game.config.width+224, game.config.height-480, '2', textConfig);
-        this.add.text(game.config.width+374, game.config.height-480, '3', textConfig);
-        this.add.text(game.config.width+524, game.config.height-480, '4', textConfig);
-        this.add.text(game.config.width+674, game.config.height-480, '5', textConfig);
         splitText = this.add.text(game.config.width-600, game.config.height-680, 'Not splitting.', textConfig);
+        press1text = this.add.text(game.config.width-980, game.config.height-480, 'Press 1', splitTextConfig);
+        press1text.visible = false;
+        press2text = this.add.text(game.config.width-830, game.config.height-480, 'Press 2', splitTextConfig);
+        press2text.visible = false;
+        press3text = this.add.text(game.config.width-680, game.config.height-480, 'Press 3', splitTextConfig);
+        press3text.visible = false;
+        press4text = this.add.text(game.config.width-530, game.config.height-480, 'Press 4', splitTextConfig);
+        press4text.visible = false;
+        press5text = this.add.text(game.config.width-380, game.config.height-480, 'Press 5', splitTextConfig);
+        press5text.visible = false;
+        press1text2 = this.add.text(game.config.width+44, game.config.height-480, 'Press 1', splitTextConfig);
+        press1text2.visible = false;
+        press2text2 = this.add.text(game.config.width+194, game.config.height-480, 'Press 2', splitTextConfig);
+        press2text2.visible = false;
+        press3text2 = this.add.text(game.config.width+344, game.config.height-480, 'Press 3', splitTextConfig);
+        press3text2.visible = false;
+        press4text2 = this.add.text(game.config.width+494, game.config.height-480, 'Press 4', splitTextConfig);
+        press4text2.visible = false;
+        press5text2 =this.add.text(game.config.width+644, game.config.height-480, 'Press 5', splitTextConfig);
+        press5text2.visible = false;
         this.createDeck();
         this.updateHand();
         deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);
@@ -383,7 +388,7 @@ class Play extends Phaser.Scene {
         // collision check with enemy
         for (var i = 0; i < this.enemyArr.length; i++) {
             if (this.collisionDistCheckByValue(this.enemyArr[i].x, this.enemyArr[i].y, player.x, player.y)) {
-                this.add.text(game.config.width-550, game.config.height-200, 'You Lose!');
+                this.add.text(game.config.width-550, game.config.height-200, 'You Lost because an enemy struck you!', splitTextConfig);
             }
         }
     }
@@ -538,8 +543,8 @@ class Play extends Phaser.Scene {
     drawCard(deck) {
         //selects a random card out of the card deck to be drawn. If no card can be drawn, causes a game over (at this moment, just in the console).
         if (cardDeck.length == 0) {this.add.text(game.config.width-550, game.config.height-200,
-            'You Lose...');
-        this.add.text(game.config.width+474, game.config.height-200, 'You Lose...')}
+            'You Lost because your Deck is empty...', splitTextConfig);
+        this.add.text(game.config.width+474, game.config.height-200, 'You Lost because your Deck is empty...', splitTextConfig)}
         else {
         let drawnCardNum = Math.floor(Math.random() * deck.length);
         let drawnCard = deck[drawnCardNum];
@@ -657,8 +662,18 @@ class Play extends Phaser.Scene {
         //This functions splits a card in the hand and only runs when isSplitting is set to be true by a split card.
         let selectedCard;
         splitText.destroy();
-        if (cardPosition==0) {splitText = this.add.text(game.config.width-600, game.config.height-680, 'Splitting, type # of card to split it.', splitTextConfig);}
-        if (cardPosition==1) {splitText = this.add.text(game.config.width+424, game.config.height-680, 'Splitting, type # of card to split it.', splitTextConfig);}
+        if (cardPosition==0) {splitText = this.add.text(game.config.width-600, game.config.height-680, 'Splitting, type # of card to split it.', splitTextConfig);
+            press1text.visible = true;
+            press2text.visible = true;
+            press3text.visible = true;
+            press4text.visible = true;
+            press5text.visible = true;}
+        if (cardPosition==1) {splitText = this.add.text(game.config.width+424, game.config.height-680, 'Splitting, type # of card to split it.', splitTextConfig);
+        press1text2.visible = true;
+        press2text2.visible = true;
+        press3text2.visible = true;
+        press4text2.visible = true;
+        press5text2.visible = true;}
         //First, select a card to split by typing the number of the card of that position in your hand
         if (Phaser.Input.Keyboard.JustDown(key1) && cardSelected == false) {
             for (let card of handList) {
@@ -784,6 +799,16 @@ class Play extends Phaser.Scene {
             deckText.destroy();
             deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);
             splitText.destroy();
+            press1text.visible = false;
+            press2text.visible = false;
+            press3text.visible = false;
+            press4text.visible = false;
+            press5text.visible = false;
+            press1text2.visible = false;
+            press2text2.visible = false;
+            press3text2.visible = false;
+            press4text2.visible = false;
+            press5text2.visible = false;
             splitText = this.add.text(game.config.width-600, game.config.height-680, 'Not splitting', textConfig);
             splitNum-=1;
             if (splitNum > 0) {isSplitting = true;}

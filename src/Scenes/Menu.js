@@ -24,6 +24,12 @@ class Menu extends Phaser.Scene {
         this.monsterText = this.add.text(game.config.width-4000, game.config.height/2-90, 'The monster card summons a dangerous monster onto the stage the alchemist must avoid. \n However, defeating the monster will let the alchemist add another potion to their deck!').setOrigin(0);
         this.attackText = this.add.text(game.config.width-4000, game.config.height/2-50, 'The attack card is a destructive potion that will destroy the nearest monster. \n This can be helpful to both help clear the path to the goal and get more cards!').setOrigin(0);
         this.splitText = this.add.text(game.config.width-4000, game.config.height/2-10, 'After activating a split card, the alchemist freezes to split one of their potions. \n Pick a potion to split by typing 1,2,3,4, or 5. \n That will select the potion in that position in the hand (from left to right). \n Spliting a potion card that has not been combined with another potion will destroy it. \n Splitting a combined potion will create 2 cards in the deck, \n one uncombined card that was the last action of the selected potion, \n and the combined potion without the action that was split from it. \n After the split is complete, a new card will be drawn from the deck.')
+        textConfig = {
+            backgroundColor: '#487CA5'
+        }
+        splitTextConfig = {
+            backgroundColor: '#E50707'
+        }
     }
     update() {
         // PLAY button UI?
