@@ -381,8 +381,12 @@ class Play extends Phaser.Scene {
                 }
             }
             game.settings = {
-                enemyextermiantecommand: false
+                enemyexterminatecommand: false
             };
+            numAttacks -=1;
+            if (numAttacks>0) {
+                game.settings = {enemyexterminatecommand: true}
+            }
         }
 
         //run this function that runs splitting after a split card is played
