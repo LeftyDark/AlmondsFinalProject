@@ -8,16 +8,17 @@ class Play extends Phaser.Scene {
         this.load.image('pos_card', './assets/cardplus.png');
         this.load.image('neg_card', './assets/cardminus.png');
         this.load.image('neu_card', './assets/cardneutral.png');
-        this.load.image('player', './assets/idle.png');
+        this.load.image('player', './assets/idleR.png');
+        this.load.image('playerL', './assets/idleL.png');
         this.load.image('platform', './assets/platform.jpg');
         this.load.image('wall', './assets/wall.jpg');
         this.load.image('smallplat', './assets/small_plat.jpg');
         this.load.image('finalground', './assets/thefloor full.png');
         this.load.image('enemy', './assets/birthday girl static.png');
-        this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
-        this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
-        this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 16});
-        this.load.spritesheet('jumpLsprite', './assets/jumpL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 16});
+        this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 48, frameHeight: 51, startFrame: 0, endFrame: 5});
+        this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 48, frameHeight: 51, startFrame: 0, endFrame: 5});
+        this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 45, frameHeight: 64, startFrame: 0, endFrame: 33});
+        this.load.spritesheet('jumpLsprite', './assets/jumpL.png', {frameWidth: 45, frameHeight: 64, startFrame: 0, endFrame: 33});
         this.load.image('goal', './assets/Sprites/Star.png');
     }
     create() {
@@ -43,7 +44,7 @@ class Play extends Phaser.Scene {
         }
         //creating a platform
         this.platform = this.add.group();
-        let plat = this.physics.add.sprite(game.config.width-1100, game.config.height-300, 'platform').setOrigin(0);
+        let plat = this.physics.add.sprite(game.config.width-1075, game.config.height-300, 'platform').setOrigin(0);
         plat.body.immovable = true;
         plat.body.allowGravity = false;
         this.plat2 = this.physics.add.sprite(game.config.width-100, game.config.height-275, 'platform').setOrigin(0);
@@ -117,6 +118,8 @@ class Play extends Phaser.Scene {
         handSize = 0;
         isSplitting = false;
         splitNum = 0;
+        numToSpawn = 0;
+        numAttacks = 0;
         cardSelected = false;
         card1 = false;
         card2 = false;
@@ -358,6 +361,8 @@ class Play extends Phaser.Scene {
             game.settings = {
                 enemyspawncommand: false
             };
+            numToSpawn-=1;
+            if (numToSpawn >0) {game.settings = {enemyspawncommand: true};};
         }
         if (game.settings.enemyexterminatecommand) {
             for (var i = 0; i < this.enemyArr.length; i++) {

@@ -32,6 +32,8 @@ let combineText, destroyText;
 let press1text, press2text, press3text, press4text, press5text, press1text2, press2text2, press3text2, press4text2, press5text2;
 //initialize variables for split card  and its functions
 let isSplitting, splitNum, cardSelected, splitText;
+//initialize variables for recursive enemy and attack stuff
+let numToSpawn, numAttacks;
 // intialize Music variable
 let playBGM;
 // initialize key values

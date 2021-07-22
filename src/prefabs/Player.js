@@ -28,7 +28,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         {this.anims.play('playerJumpR', 8, true);
         setTimeout(() => {player.setTexture('player');}, 900);}
         else {this.anims.play('playerJumpL', 8, true);
-        setTimeout(() => {player.setTexture('player');}, 900);}
+        setTimeout(() => {player.setTexture('playerL');}, 900);}
     }
     left() {
         this.body.velocity.x -= 100;
@@ -37,7 +37,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         this.anims.play('playerDashL', 8, true);
         setTimeout(() => {this.body.velocity.x = 0; 
-            player.setTexture('player');}, 1000);
+            player.setTexture('playerL');}, 1000);
     }
     right() {
         this.body.velocity.x += 100;

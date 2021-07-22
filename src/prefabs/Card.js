@@ -63,6 +63,7 @@ class Card extends Phaser.Physics.Arcade.Sprite {
             player.jump();
         }
         if (type == 'enemy') {
+            numToSpawn+=1;
             //place enemy creation function here
             console.log('new enemy created');
             game.settings = {
@@ -71,6 +72,7 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         }
         if (type == 'attack') {
             //place attack function here
+            numAttacks+=1;
             console.log('attack launched');
             game.settings = {
                 enemyexterminatecommand: true
@@ -96,13 +98,16 @@ class Card extends Phaser.Physics.Arcade.Sprite {
         }
         if (this.enemy > 0) {
             for (let i = 0; i < this.enemy; i++) {//put enemy function here
+                numToSpawn+=1;
                 console.log('new enemy created');
                 game.settings = {
                     enemyspawncommand: true
                 };}
         }
         if (this.attack > 0) {
-            for (let i = 0; i < this.attack; i++) {game.settings = {
+            for (let i = 0; i < this.attack; i++) {
+                numAttacks +=1;
+                game.settings = {
                 enemyexterminatecommand: true
             };
             }
