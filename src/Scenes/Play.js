@@ -131,6 +131,8 @@ class Play extends Phaser.Scene {
         this.add.text(game.config.width-220, game.config.height-680, '1st Selected Card', textConfig);
         this.add.text(game.config.width+354, game.config.height-680, 'Hand', textConfig);
         this.add.text(game.config.width+804, game.config.height-680, '1st Selected Card', textConfig);
+        this.add.text(game.config.width-670, game.config.height-650, 'Press R at any time to restart', splitTextConfig);
+        this.add.text(game.config.width+354, game.config.height-650, 'Press R at any time to restart', splitTextConfig);
         splitText = this.add.text(game.config.width-600, game.config.height-680, 'Not splitting.', textConfig);
         press1text = this.add.text(game.config.width-980, game.config.height-480, 'Press 1', splitTextConfig);
         press1text.visible = false;
@@ -155,6 +157,10 @@ class Play extends Phaser.Scene {
         this.createDeck();
         this.updateHand();
         deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);
+        combineText = this.add.text(game.config.width-950, game.config.height-650, 'Cards combined', textConfig);
+        combineText.visible = false;
+        destroyText = this.add.text(game.config.width-950, game.config.height-650, 'Cards destroyed', splitTextConfig);
+        destroyText.visible = false;
         //let firstCard = this.cardCreateSingle('positive', 'move1L', game.config.width/4, game.config.height-550);
         //let secondCard = this.cardCreateSingle('negative', 'jump', game.config.width/2, game.config.height-550);
         //let firstCombine = this.cardCombine(firstCard, secondCard);
@@ -174,7 +180,7 @@ class Play extends Phaser.Scene {
         key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
         key5 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE);
-        
+        keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         //Changing how the camera works to enable longer levels.
         camera = this.cameras.main;
     }
@@ -191,6 +197,8 @@ class Play extends Phaser.Scene {
         if (cardPosition == 0) {
             splitText.x = game.config.width-600;
             deckText.x = game.config.width-950;
+            combineText.x = game.config.width-950;
+            destroyText.x = game.config.width-950;
             for (let card of handList) {
                 switch (card.handPosition) {
                     case 1:
@@ -222,6 +230,8 @@ class Play extends Phaser.Scene {
         if (cardPosition == 1) {
             splitText.x = game.config.width+424;
             deckText.x = game.config.width+74;
+            combineText.x = game.config.width+74;
+            destroyText.x = game.config.width+74;
             for (let card of handList) {
                 switch (card.handPosition) {
                     case 1:
@@ -258,9 +268,11 @@ class Play extends Phaser.Scene {
             if ((selectedCardList[0].charge == 'positive' && selectedCardList[1].charge == 'positive') || (selectedCardList[0].charge == 'negative' && selectedCardList[1].charge == 'negative')) {
                 console.log('same charges do not combine');
                 this.sound.play('break');
+                destroyText.visible = true;
             }
             else {this.cardCombine(selectedCardList[0],selectedCardList[1], game.config.width-5000, game.config.height-550);
-            this.sound.play('appear')}
+            this.sound.play('appear');
+            combineText.visible = true;}
             switch (selectedCardList[0].handPosition) {
                 case 1:
                     card1 = false;
@@ -381,6 +393,9 @@ class Play extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             player.left();
         }
+        if (Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.scene.restart();
+        }
         
         if(this.collisionCheck(player, this.goal)) {
             this.add.text(game.config.width-550, game.config.height-200,
@@ -460,6 +475,8 @@ class Play extends Phaser.Scene {
         newCard.on('pointerdown', function (pointer) {
             if (newCard.selected == false && isSplitting == false) {
             selectedCounter +=1;
+            combineText.visible = false;
+            destroyText.visible = false;
             newCard.selected = true;
             if (cardPosition == 0) {newCard.x = game.config.width-127;};
             if (cardPosition == 1) {newCard.x = game.config.width+897;};
@@ -508,6 +525,8 @@ class Play extends Phaser.Scene {
         newCombinedCard.on('pointerdown', function (pointer) {
             if (newCombinedCard.selected == false && isSplitting == false) {
             selectedCounter +=1;
+            combineText.visible = false;
+            destroyText.visible = false;
             newCombinedCard.selected = true;
             if (cardPosition == 0) {newCombinedCard.x = game.config.width-127;};
             if (cardPosition == 1) {newCombinedCard.x = game.config.width+897;};
