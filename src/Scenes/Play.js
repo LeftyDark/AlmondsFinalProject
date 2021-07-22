@@ -8,13 +8,10 @@ class Play extends Phaser.Scene {
         this.load.image('pos_card', './assets/cardplus.png');
         this.load.image('neg_card', './assets/cardminus.png');
         this.load.image('neu_card', './assets/cardneutral.png');
-        this.load.image('player', './assets/idleR.png');
-        this.load.image('playerL', './assets/idleL.png');
         this.load.image('platform', './assets/platform.jpg');
         this.load.image('wall', './assets/wall.jpg');
         this.load.image('smallplat', './assets/small_plat.jpg');
         this.load.image('finalground', './assets/thefloor full.png');
-        this.load.image('enemy', './assets/birthday girl static.png');
         this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 48, frameHeight: 51, startFrame: 0, endFrame: 5});
         this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 48, frameHeight: 51, startFrame: 0, endFrame: 5});
         this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 45, frameHeight: 64, startFrame: 0, endFrame: 33});
