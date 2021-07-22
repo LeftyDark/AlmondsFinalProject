@@ -42,7 +42,7 @@ class Play extends Phaser.Scene {
         }
         //creating a platform
         this.platform = this.add.group();
-        let plat = this.physics.add.sprite(game.config.width-750, game.config.height-300, 'medplat').setOrigin(0);
+        let plat = this.physics.add.sprite(game.config.width-650, game.config.height-300, 'medplat').setOrigin(0);
         plat.body.immovable = true;
         plat.body.allowGravity = false;
         this.plat2 = this.physics.add.sprite(game.config.width-100, game.config.height-275, 'platform').setOrigin(0);
@@ -69,7 +69,7 @@ class Play extends Phaser.Scene {
         this.wall2.body.immovable = true;
         this.wall2.body.allowGravity = false;
         this.wall.add(this.wall2);
-        this.wall3 = this.physics.add.sprite(game.config.width-400, game.config.height-450, 'wall').setOrigin(0);
+        this.wall3 = this.physics.add.sprite(game.config.width-250, game.config.height-450, 'wall').setOrigin(0);
         this.wall3.body.immovable = true;
         this.wall3.body.allowGravity = false;
         this.wall.add(this.wall3);
