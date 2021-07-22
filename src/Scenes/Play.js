@@ -344,7 +344,7 @@ class Play extends Phaser.Scene {
 
         // enemy spawn if card is chosen
         if (game.settings.enemyspawncommand) {
-            if(player.x < 1000) {
+            if(player.x < 1024) {
                 var enemyX = Phaser.Math.Between(30,1000); // game.config.width - 50
             } else {
                 var enemyX = Phaser.Math.Between(1054,2024); // game.config.width - 50
@@ -365,6 +365,8 @@ class Play extends Phaser.Scene {
                 this.diffX = Math.abs(this.enemyArr[i].x - player.x);
                 this.dist = Math.sqrt(Math.pow(this.diffY, 2) + Math.pow(this.diffX, 2));
                 if(this.dist < 500) { // change this value to change attack radius
+                    let enemyText = this.add.text(this.enemyArr[i].x,this.enemyArr[i].y, 'New card obtained!', textConfig);
+                    setTimeout(() => {enemyText.destroy();}, 5000)
                     this.enemyArr[i].x = 9999999999;
                     this.enemyArr.splice(i, 1);
                     i--;

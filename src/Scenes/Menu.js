@@ -16,8 +16,10 @@ class Menu extends Phaser.Scene {
         playBGM.play();
         this.spacebarCounter = 0;
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.nameText = this.add.text(game.config.width-700,game.config.height/2-200, 'Alchemist Adventure (Name Not Final)').setOrigin(0);
+        keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        this.nameText = this.add.text(game.config.width-700,game.config.height/2-200, 'Mixing Mayhem').setOrigin(0);
         this.startText = this.add.text(game.config.width-700, game.config.height/2+200, 'Press Spacebar to view controls').setOrigin(0);
+        this.creditsText = this.add.text(game.config.width-700, game.config.height/2+250, 'Press R to view Credits').setOrigin(0);
         this.controlText = this.add.text(game.config.width-5000, game.config.height/2-100, 'A great alchemist accidentally sealed away all their powers and strength within their potions! \n Now they must use and mix their potions to move, jump, and more! \n Click on 2 potion cards in a row to unleash their powers! \n If their charges are not both positive or negative, they\'ll also combine into a new potion! \n Use these potions to reach the star and help the alchemist regain their powers. \n But be wary, hitting an enemy or running out of potion cards in deck will end the game. \n They\'ll never regain their lost powers then...').setOrigin(0);
         this.moveText = this.add.text(game.config.width-4000, game.config.height/2-160, 'There are 4 variations of the move card. \n Move1L and Move1R move the alchemist slightly to the left or right respectively. \n Meanwhile Move3L and Move3R have the alchemist dash farther in their corresponding direction').setOrigin(0);
         this.jumpText = this.add.text(game.config.width-4000, game.config.height/2-110, 'The jump card lets the alchemist unleash a powerful jump to help him reach higher platforms.').setOrigin(0);
@@ -56,6 +58,10 @@ class Menu extends Phaser.Scene {
         }
         if (this.spacebarCounter ==3) {
             this.scene.start('playScene');
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.scene.start('creditsScene');
+            this.sound.stopAll();
         }
     }
 }
