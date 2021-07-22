@@ -14,6 +14,7 @@ class Play extends Phaser.Scene {
         this.load.image('medplat', './assets/medplat.jpg');
         this.load.image('miniwall', './assets/miniwall.jpg');
         this.load.image('finalground', './assets/thefloor full.png');
+        this.load.image('arrow', './assets/Arrow.png');
         this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 48, frameHeight: 64, startFrame: 0, endFrame: 5});
         this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 48, frameHeight: 64, startFrame: 0, endFrame: 5});
         this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 45, frameHeight: 64, startFrame: 0, endFrame: 33});
@@ -49,6 +50,9 @@ class Play extends Phaser.Scene {
         this.plat2 = this.physics.add.sprite(game.config.width-100, game.config.height-275, 'platform').setOrigin(0);
         this.plat2.body.immovable = true;
         this.plat2.body.allowGravity = false;
+        this.arrow = this.physics.add.sprite(game.config.width-100, game.config.height-350, 'arrow').setOrigin(0);
+        this.arrow.body.immovable = true;
+        this.arrow.body.allowGravity = false;
         this.platform.add(plat);
         this.platform.add(this.plat2);
         // this.platform.body.checkCollision.down = false;
