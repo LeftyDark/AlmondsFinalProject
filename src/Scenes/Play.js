@@ -12,7 +12,7 @@ class Play extends Phaser.Scene {
         this.load.image('platform', './assets/platform.jpg');
         this.load.image('wall', './assets/wall.jpg');
         this.load.image('smallplat', './assets/small_plat.jpg');
-        this.load.image('finalground', './assets/thefloor top1.png');
+        this.load.image('finalground', './assets/thefloor full.png');
         this.load.image('enemy', './assets/birthday girl static.png');
         this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
         this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
@@ -356,6 +356,9 @@ class Play extends Phaser.Scene {
                     this.enemyArr[i].x = 9999999999;
                     this.enemyArr.splice(i, 1);
                     i--;
+                    this.cardCreateSingle('none','none', game.config.width-5000,game.config.height-550);
+                    deckText.destroy();
+                    deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);
                 }
             }
             game.settings = {
