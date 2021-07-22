@@ -12,6 +12,7 @@ class Play extends Phaser.Scene {
         this.load.image('wall', './assets/wall.jpg');
         this.load.image('smallplat', './assets/small_plat.jpg');
         this.load.image('medplat', './assets/medplat.jpg');
+        this.load.image('miniwall', './assets/miniwall.jpg');
         this.load.image('finalground', './assets/thefloor full.png');
         this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 48, frameHeight: 51, startFrame: 0, endFrame: 5});
         this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 48, frameHeight: 51, startFrame: 0, endFrame: 5});
@@ -42,22 +43,14 @@ class Play extends Phaser.Scene {
         }
         //creating a platform
         this.platform = this.add.group();
-        let plat = this.physics.add.sprite(game.config.width-650, game.config.height-300, 'medplat').setOrigin(0);
+        let plat = this.physics.add.sprite(game.config.width-775, game.config.height-300, 'platform').setOrigin(0);
         plat.body.immovable = true;
         plat.body.allowGravity = false;
         this.plat2 = this.physics.add.sprite(game.config.width-100, game.config.height-275, 'platform').setOrigin(0);
         this.plat2.body.immovable = true;
         this.plat2.body.allowGravity = false;
-        this.miniplat = this.physics.add.sprite(game.config.width+650, game.config.height-400, 'smallplat').setOrigin(0);
-        this.miniplat.body.immovable = true;
-        this.miniplat.body.allowGravity = false;
-        this.miniplat2 = this.physics.add.sprite(game.config.width+900, game.config.height-250, 'smallplat').setOrigin(0);
-        this.miniplat2.body.immovable = true;
-        this.miniplat2.body.allowGravity = false;
         this.platform.add(plat);
         this.platform.add(this.plat2);
-        this.platform.add(this.miniplat);
-        this.platform.add(this.miniplat2);
         // this.platform.body.checkCollision.down = false;
         //creating walls to stop the player from moving past the edges
         this.wall = this.add.group();
@@ -69,10 +62,10 @@ class Play extends Phaser.Scene {
         this.wall2.body.immovable = true;
         this.wall2.body.allowGravity = false;
         this.wall.add(this.wall2);
-        this.wall3 = this.physics.add.sprite(game.config.width-250, game.config.height-450, 'wall').setOrigin(0);
-        this.wall3.body.immovable = true;
-        this.wall3.body.allowGravity = false;
-        this.wall.add(this.wall3);
+        this.miniwall = this.physics.add.sprite(game.config.width+650, game.config.height-300, 'miniwall').setOrigin(0);
+        this.miniwall.body.immovable = true;
+        this.miniwall.body.allowGravity = false;
+        this.wall.add(this.miniwall);
         //creating player
         player = new Player(this, game.config.width-900, game.config.height-100, 'player');
         this.physics.add.collider(player, this.ground);
@@ -80,9 +73,10 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(player, this.wall);
 
         // create Goal
-        this.goal = new Goal(this, game.config.width+750, game.config.height - 450, 'goal');
+        this.goal = new Goal(this, game.config.width+900, game.config.height-100, 'goal');
         this.goal.body.immovable = true;
         this.goal.body.allowGravity = false;
+        gameOver = false;
 
         //creating animations
         this.dashRAni = this.anims.create({
@@ -171,6 +165,14 @@ class Play extends Phaser.Scene {
 
         // Spawn Player, Enemy, and Cards
         this.enemyArr = [];
+        this.physics.add.collider(this.enemyArr, this.ground);
+        this.physics.add.collider(this.enemyArr, this.platform);
+        let enemy1 = new Enemy(this, game.config.width-350, 500, 'enemy').setOrigin(0);
+        this.enemyArr.push(enemy1);
+        let enemy2 = new Enemy(this, game.config.width+650,500, 'enemy').setOrigin(0);
+        this.enemyArr.push(enemy2);
+        
+    
 
         // Assign key values here
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -348,7 +350,6 @@ class Play extends Phaser.Scene {
             var enemyX = this.determineEnemyX();
             var enemyY = Phaser.Math.Between(0,500); // game.config.height - 350
             let enemysprite = new Enemy(this, enemyX, enemyY, 'enemy');
-            //this.enemyGroup.add(enemysprite);
             this.enemyArr.push(enemysprite);
             this.physics.add.collider(this.enemyArr, this.ground);
             this.physics.add.collider(this.enemyArr, this.platform);
@@ -406,6 +407,7 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width-550, game.config.height-200,
                 'You Win!');
             this.add.text(game.config.width+474, game.config.height-200, 'You Win!');
+            gameOver = true;
         }
 
         // collision check with enemy
@@ -413,6 +415,7 @@ class Play extends Phaser.Scene {
             if (this.collisionDistCheckByValue(this.enemyArr[i].x, this.enemyArr[i].y, player.x, player.y)) {
                 this.add.text(game.config.width-550, game.config.height-200, 'You Lost because an enemy struck you! \n The game will restart in 5 seconds!', splitTextConfig);
                 player.x -=10000;
+                gameOver = true;
                 setTimeout(() => {this.scene.restart();}, 5000);
             }
         }
@@ -480,7 +483,7 @@ class Play extends Phaser.Scene {
         this.cardText.setPosition(newCard.x-40, newCard.y-50);
         newCard.body.allowGravity = false;
         newCard.on('pointerdown', function (pointer) {
-            if (newCard.selected == false && isSplitting == false) {
+            if (newCard.selected == false && isSplitting == false && gameOver == false) {
             selectedCounter +=1;
             combineText.visible = false;
             destroyText.visible = false;
@@ -530,7 +533,7 @@ class Play extends Phaser.Scene {
         if (newCharge == 'neutral') {newCombinedCard = new Card(this, x,y, 'neu_card', 0, card1.cardType, newCharge, true).setInteractive();}
         newCombinedCard.body.allowGravity = false;
         newCombinedCard.on('pointerdown', function (pointer) {
-            if (newCombinedCard.selected == false && isSplitting == false) {
+            if (newCombinedCard.selected == false && isSplitting == false && gameOver == false) {
             selectedCounter +=1;
             combineText.visible = false;
             destroyText.visible = false;
@@ -574,6 +577,7 @@ class Play extends Phaser.Scene {
         if (cardDeck.length == 0) {this.add.text(game.config.width-550, game.config.height-200,
             'You Lost because your Deck is empty... \n The game will restart in 5 seconds!', splitTextConfig);
         this.add.text(game.config.width+474, game.config.height-200, 'You Lost because your Deck is empty... \n The game will restart in 5 seconds!', splitTextConfig)
+        gameOver = true;
         setTimeout(() => {this.scene.restart();}, 5000);
     }
         else {

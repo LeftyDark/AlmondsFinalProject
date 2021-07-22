@@ -23,6 +23,8 @@ let borderPadding = borderUISize/3;
 let player;
 //initialize variable for camera
 let camera;
+//initalize game over variable
+let gameOver;
 // initialize variable for Deck array and hand stuff
 let cardDeck, deckText, handSize, handList, cardPosition;
 let card1, card2, card3, card4, card5;
