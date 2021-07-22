@@ -62,10 +62,6 @@ class Play extends Phaser.Scene {
         this.wall2.body.immovable = true;
         this.wall2.body.allowGravity = false;
         this.wall.add(this.wall2);
-        this.miniwall = this.physics.add.sprite(game.config.width+650, game.config.height-300, 'miniwall').setOrigin(0);
-        this.miniwall.body.immovable = true;
-        this.miniwall.body.allowGravity = false;
-        this.wall.add(this.miniwall);
         //creating player
         player = new Player(this, game.config.width-900, game.config.height-100, 'player');
         this.physics.add.collider(player, this.ground);
@@ -73,7 +69,7 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(player, this.wall);
 
         // create Goal
-        this.goal = new Goal(this, game.config.width+900, game.config.height-100, 'goal');
+        this.goal = new Goal(this, game.config.width+200, game.config.height-300, 'goal');
         this.goal.body.immovable = true;
         this.goal.body.allowGravity = false;
         gameOver = false;
@@ -167,9 +163,9 @@ class Play extends Phaser.Scene {
         this.enemyArr = [];
         this.physics.add.collider(this.enemyArr, this.ground);
         this.physics.add.collider(this.enemyArr, this.platform);
-        let enemy1 = new Enemy(this, game.config.width-350, 500, 'enemy').setOrigin(0);
+        let enemy1 = new Enemy(this, game.config.width-380, 500, 'enemy');
         this.enemyArr.push(enemy1);
-        let enemy2 = new Enemy(this, game.config.width+650,500, 'enemy').setOrigin(0);
+        let enemy2 = new Enemy(this, game.config.width+600,500, 'enemy');
         this.enemyArr.push(enemy2);
         
     
@@ -585,7 +581,7 @@ class Play extends Phaser.Scene {
     }
     drawCard(deck) {
         //selects a random card out of the card deck to be drawn. If no card can be drawn, causes a game over (at this moment, just in the console).
-        if (cardDeck.length == 0) {this.add.text(game.config.width-550, game.config.height-200,
+        setTimeout(() => {if (cardDeck.length == 0 && gameOver == false) {this.add.text(game.config.width-550, game.config.height-200,
             'You Lost because your Deck is empty... \n The game will restart in 5 seconds!', splitTextConfig);
         this.add.text(game.config.width+474, game.config.height-200, 'You Lost because your Deck is empty... \n The game will restart in 5 seconds!', splitTextConfig)
         gameOver = true;
@@ -676,7 +672,7 @@ class Play extends Phaser.Scene {
             deck.splice(drawnCardNum, 1);  
             return 'card made in hand position 5'     
         }
-        return drawnCard}
+        return drawnCard}}, 2000)
     }
     createDeck() {
         //This functions creates the default deck of cards for the start of the game.

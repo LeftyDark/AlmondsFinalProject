@@ -14,6 +14,7 @@ class Menu extends Phaser.Scene {
         this.load.audio('BGMplay', './assets/BGM/tanukichi_loop.wav'); // DOVA-Syndrome たぬきちの冒険
     }
     create() {
+        this.cameras.main.setBackgroundColor('#5cb595');
         textConfig = {
             backgroundColor: '#487CA5'
         }
