@@ -402,7 +402,7 @@ class Play extends Phaser.Scene {
         if(this.collisionCheck(player, this.goal)) {
             this.add.text(game.config.width-550, game.config.height-200,
                 'You Win!', textConfig);
-            this.add.text(game.config.width+474, game.config.height-200, 'You Win!');
+            this.add.text(game.config.width+474, game.config.height-200, 'You Win!', textConfig);
             if (this.enemyArr.length >0) { for (let enemy of this.enemyArr) {
                 enemy.x -=5000;
                 enemy.destroy();
@@ -412,7 +412,7 @@ class Play extends Phaser.Scene {
 
         // collision check with enemy
         for (var i = 0; i < this.enemyArr.length; i++) {
-            if (this.collisionDistCheckByValue(this.enemyArr[i].x, this.enemyArr[i].y, player.x, player.y)) {
+            if (this.collisionDistCheckByValue(this.enemyArr[i].x, this.enemyArr[i].y, player.x, player.y) && gameOver == false) {
                 this.add.text(game.config.width-550, game.config.height-200, 'You Lost because an enemy struck you! \n The game will restart in 5 seconds!', splitTextConfig);
                 player.x -=10000;
                 gameOver = true;
@@ -574,6 +574,7 @@ class Play extends Phaser.Scene {
     }
     drawCard(deck) {
         //selects a random card out of the card deck to be drawn. If no card can be drawn, causes a game over (at this moment, just in the console).
+        if (gameOver == false) {
         setTimeout(() => {if (cardDeck.length == 0 && gameOver == false) {this.add.text(game.config.width-550, game.config.height-200,
             'You Lost because your Deck is empty... \n The game will restart in 5 seconds!', splitTextConfig);
         this.add.text(game.config.width+474, game.config.height-200, 'You Lost because your Deck is empty... \n The game will restart in 5 seconds!', splitTextConfig)
@@ -668,7 +669,7 @@ class Play extends Phaser.Scene {
         }
         return drawnCard}
         }
-    }, 1700)
+    }, 1700)}
     }
     createDeck() {
         //This functions creates the default deck of cards for the start of the game.
