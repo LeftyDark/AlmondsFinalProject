@@ -7,7 +7,7 @@ class Menu extends Phaser.Scene {
         this.load.image('enemy', './assets/birthday girl static.png');
         this.load.image('player', './assets/idleR.png');
         this.load.image('playerL', './assets/idleL.png');
-        this.load.image('title', './assets/title.png');
+        this.load.image('title', './assets/Title.png');
         this.load.audio('appear', './assets/SoundEffects/placeholder.wav');
         this.load.audio('flip', './assets/SoundEffects/cardflip.wav');
         this.load.audio('break', './assets/SoundEffects/202093__spookymodem__bottle-shattering.wav')
