@@ -105,6 +105,7 @@ class Play extends Phaser.Scene {
         });
         
         //creating cards and deck
+        testMode = false;
         cardDeck = [];
         handList = [];
         handSize = 0;
@@ -121,7 +122,6 @@ class Play extends Phaser.Scene {
         cardPosition = 0;
         selectedCardList = [];
         selectedCounter = 0;
-        //this.add.text(game.config.width/4, game.config.height/2-50, 'Click on cards to combine them and use their actions! \n 2 Positive and 2 Negative cards do not combine. \n Or move left and right with the arrow keys, and jump with SPACEBAR! \n Currently only the move and jump cards work. \n The split card partially works, type the number of a card in your hand \n to split it if it is not combined.');
         this.add.text(game.config.width-670, game.config.height-680, 'Hand', textConfig);
         this.add.text(game.config.width-220, game.config.height-680, '1st Selected Card', textConfig);
         this.add.text(game.config.width+354, game.config.height-680, 'Hand', textConfig);
@@ -176,6 +176,9 @@ class Play extends Phaser.Scene {
 
         // Assign key values here
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
         key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
         key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
         key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
@@ -401,6 +404,20 @@ class Play extends Phaser.Scene {
         // Repeat until Player reaches Goal, Falls off a cliff, or collides with an Enemy
         if (Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyT)) {
+            testMode = true;
+        }
+        if (testMode == true) {
+            if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+                player.left();
+            }
+            if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+                player.right();
+            }
+            if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
+                player.jump();
+            }
         }
         
         if(this.collisionCheck(player, this.goal)) {

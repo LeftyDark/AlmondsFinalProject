@@ -39,6 +39,7 @@ class Menu extends Phaser.Scene {
         this.startText = this.add.text(game.config.width-700, game.config.height/2+200, 'Press Spacebar to view controls', textConfig).setOrigin(0);
         this.creditsText = this.add.text(game.config.width-700, game.config.height/2+250, 'Press R to view Credits', splitTextConfig).setOrigin(0);
         this.controlText = this.add.text(game.config.width-5000, game.config.height/2-100, 'A great alchemist accidentally sealed away all their powers and strength within their potions! \n Now they must use and mix their potions to move, jump, and more! \n Click on 2 potion cards in a row to unleash their powers! \n If their charges are not both positive or negative, they\'ll also combine into a new potion! \n Use these potions to reach the star and help the alchemist regain their powers. \n But be wary, hitting an enemy or running out of potion cards in deck will end the game. \n They\'ll never regain their lost powers then...', textConfig).setOrigin(0);
+        this.testerText = this.add.text(game.config.width-4000, game.config.height/2+100, 'If you are struggling with the game, press T in game to activate tester controls. \n Then you can move left and right with the left and right arrow keys. \n And you can jump with SpaceBar.', splitTextConfig).setOrigin(0);
         this.moveText = this.add.text(game.config.width-4000, game.config.height/2-160, 'There are 4 variations of the move card. \n Move1L and Move1R move the alchemist slightly to the left or right respectively. \n Meanwhile Move3L and Move3R have the alchemist dash farther in their corresponding direction', textConfig).setOrigin(0);
         this.jumpText = this.add.text(game.config.width-4000, game.config.height/2-110, 'The jump card lets the alchemist unleash a powerful jump to help him reach higher platforms.', splitTextConfig).setOrigin(0);
         this.monsterText = this.add.text(game.config.width-4000, game.config.height/2-90, 'The monster card summons a dangerous monster onto the stage the alchemist must avoid. \n However, defeating a monster will let the alchemist add another potion to their deck!', textConfig).setOrigin(0);
@@ -55,11 +56,13 @@ class Menu extends Phaser.Scene {
         if (this.spacebarCounter ==1) {
             this.startText.destroy();
             this.controlText.x = game.config.width-950;
+            this.testerText.x = game.config.width-950;
             this.startText = this.add.text(game.config.width-700, game.config.height/2+200, 'Press Spacebar to learn about the cards', textConfig).setOrigin(0);
         }
         if (this.spacebarCounter ==2) {
             this.startText.destroy();
             this.controlText.destroy();
+            this.testerText.destroy();
             this.moveText.x = game.config.width-950;
             this.jumpText.x = game.config.width-950;
             this.monsterText.x = game.config.width-950;

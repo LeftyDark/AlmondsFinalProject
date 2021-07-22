@@ -39,6 +39,8 @@ let numToSpawn, numAttacks;
 // intialize Music variable
 let playBGM;
 // initialize key values
-let keySPACE, keyRIGHT, keyLEFT, key1, key2, key3, key4, key5, keyR;
-
+let keySPACE, keyRIGHT, keyLEFT, key1, key2, key3, key4, key5, keyR, keyT;
+//initalize variables for card selection
 let selectedCounter, selectedCardList;
+//initialize testing mode
+let testMode;
