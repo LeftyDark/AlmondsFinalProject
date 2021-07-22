@@ -14,8 +14,8 @@ class Play extends Phaser.Scene {
         this.load.image('medplat', './assets/medplat.jpg');
         this.load.image('miniwall', './assets/miniwall.jpg');
         this.load.image('finalground', './assets/thefloor full.png');
-        this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 48, frameHeight: 51, startFrame: 0, endFrame: 5});
-        this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 48, frameHeight: 51, startFrame: 0, endFrame: 5});
+        this.load.spritesheet('dashRsprite', './assets/dashR.png', {frameWidth: 48, frameHeight: 64, startFrame: 0, endFrame: 5});
+        this.load.spritesheet('dashLsprite', './assets/dashL.png', {frameWidth: 48, frameHeight: 64, startFrame: 0, endFrame: 5});
         this.load.spritesheet('jumpRsprite', './assets/jumpR.png', {frameWidth: 45, frameHeight: 64, startFrame: 0, endFrame: 33});
         this.load.spritesheet('jumpLsprite', './assets/jumpL.png', {frameWidth: 45, frameHeight: 64, startFrame: 0, endFrame: 33});
         this.load.image('goal', './assets/Sprites/Star.png');
@@ -172,8 +172,6 @@ class Play extends Phaser.Scene {
 
         // Assign key values here
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
         key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
         key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
@@ -397,15 +395,6 @@ class Play extends Phaser.Scene {
         }
         // Execute all comands on card
         // Repeat until Player reaches Goal, Falls off a cliff, or collides with an Enemy
-        if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
-            player.jump();
-        }
-        if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
-            player.right();
-        }
-        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-            player.left();
-        }
         if (Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
@@ -414,6 +403,10 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width-550, game.config.height-200,
                 'You Win!', textConfig);
             this.add.text(game.config.width+474, game.config.height-200, 'You Win!');
+            if (this.enemyArr.length >0) { for (let enemy of this.enemyArr) {
+                enemy.x -=5000;
+                enemy.destroy();
+            }}
             gameOver = true;
         }
 
