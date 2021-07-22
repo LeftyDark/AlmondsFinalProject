@@ -390,7 +390,7 @@ class Play extends Phaser.Scene {
 
     collisionDistCheckByValue(oneX, oneY, twoX, twoY) {
         this.ptDist = Math.sqrt((Math.abs(oneX - twoX) ** 2) + (Math.abs(oneY - twoY) ** 2));
-        return (this.ptDist < 100);
+        return (this.ptDist < 75);
     }
 
     determineCardType(type='none') {
