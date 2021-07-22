@@ -336,7 +336,7 @@ class Play extends Phaser.Scene {
                 this.diffY = Math.abs(this.enemyArr[i].y - player.y);
                 this.diffX = Math.abs(this.enemyArr[i].x - player.x);
                 this.dist = Math.sqrt(Math.pow(this.diffY, 2) + Math.pow(this.diffX, 2));
-                if(this.dist < 500) {
+                if(this.dist < 500) { // change this value to change attack radius
                     this.enemyArr[i].x = 9999999999;
                     this.enemyArr.splice(i, 1);
                     i--;
