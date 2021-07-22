@@ -320,7 +320,11 @@ class Play extends Phaser.Scene {
 
         // enemy spawn if card is chosen
         if (game.settings.enemyspawncommand) {
-            var enemyX = Phaser.Math.Between(30,1000); // game.config.width - 50
+            if(player.x < 1000) {
+                var enemyX = Phaser.Math.Between(30,1000); // game.config.width - 50
+            } else {
+                var enemyX = Phaser.Math.Between(1054,2024); // game.config.width - 50
+            }
             var enemyY = Phaser.Math.Between(0,500); // game.config.height - 350
             let enemysprite = new Enemy(this, enemyX, enemyY, 'enemy');
             //this.enemyGroup.add(enemysprite);
