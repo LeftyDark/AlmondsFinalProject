@@ -621,6 +621,8 @@ class Play extends Phaser.Scene {
             drawnCard.handPosition = 1;
             card1 = true;
             deck.splice(drawnCardNum, 1);
+            deckText.destroy();
+            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);
             return 'card made in hand position 1'
         }
         if (card2 == false) {
@@ -637,6 +639,8 @@ class Play extends Phaser.Scene {
             drawnCard.handPosition = 2;
             card2 = true;
             deck.splice(drawnCardNum, 1);
+            deckText.destroy();
+            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);
             return 'card made in hand position 2'     
         }
         if (card3 == false) {
@@ -652,7 +656,9 @@ class Play extends Phaser.Scene {
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y-50);
             drawnCard.handPosition = 3;
             card3 = true;
-            deck.splice(drawnCardNum, 1);   
+            deck.splice(drawnCardNum, 1);
+            deckText.destroy();
+            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);   
             return 'card made in hand position 3'     
         }
         if (card4 == false) {
@@ -669,6 +675,8 @@ class Play extends Phaser.Scene {
             drawnCard.handPosition = 4;
             card4 = true;
             deck.splice(drawnCardNum, 1); 
+            deckText.destroy();
+            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);
             return 'card made in hand position 4'    
         }
         if (card5 == false) {
@@ -685,7 +693,9 @@ class Play extends Phaser.Scene {
             drawnCard.cardText.setPosition(drawnCard.x-40, drawnCard.y-50);
             drawnCard.handPosition = 5;
             card5 = true;
-            deck.splice(drawnCardNum, 1);  
+            deck.splice(drawnCardNum, 1);
+            deckText.destroy();
+            deckText = this.add.text(game.config.width-950, game.config.height-680, `Cards in deck: ${cardDeck.length}`, textConfig);  
             return 'card made in hand position 5'     
         }
         return drawnCard}
